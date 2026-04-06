@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+.vercel/
+.wrangler/
+.DS_Store
+Thumbs.db
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+next-env.d.ts
+WhatsApp Image 2026-04-03 at 20.23.47.jpeg
+Om_Avashia_Resume.docx
+AGENTS.md 
+CLAUDE.md 
