@@ -6,14 +6,14 @@ const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
   style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  variable: '--font-cormorant-face',
   display: 'swap',
 });
 
 const mono = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['300', '400', '500'],
-  variable: '--font-mono',
+  variable: '--font-mono-face',
   display: 'swap',
 });
 
@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${mono.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${mono.variable} dark`}>
       <body className="bg-[#080808] text-[#f0efe9]">{children}</body>
     </html>
   );
