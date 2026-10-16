@@ -59,7 +59,7 @@ const readingList = [
 		category: 'tech',
 	},
 	{
-		title: 'How we saved 100 terabytes of memory by optimizing 1.1.1.1’s DNS cache',
+		title: "How we saved 100 terabytes of memory by optimizing 1.1.1.1's DNS cache",
 		author: 'Sebastiaan Neuteboom',
 		href: 'https://blog.cloudflare.com/dns-cache-memory-optimization-1111/',
 		note: (
@@ -177,7 +177,6 @@ const readingCategories = ['tech', 'design & taste', 'literature'];
 const videos = [
 	{
 		id: '4B92hMQ9jiU',
-		// highest-res thumbnail YouTube has for this video (maxresdefault isn't always generated)
 		thumb: 'maxresdefault',
 		href: 'https://youtu.be/4B92hMQ9jiU?si=lvzOjnRAI3Vg9G7_',
 		title: 'Using CPU profiling to make my Go Redis clone blazingly fast',
@@ -537,7 +536,6 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 										<ul className="flex flex-col gap-7">
 											{readingList.filter((r) => r.category === category).map(({ title, author, note, href, series }) => (
 												<li key={title} className="flex flex-col gap-[3px]">
-													{/* note sits outside the link so it can hold its own links */}
 													{series ? (
 														<div className="flex flex-col gap-[3px]">
 															<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
@@ -611,17 +609,12 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 												const isSinglePr = filteredPrs.length === 1;
 
 												return (
-													<li key={name} className="flex flex-col gap-[3px]">
+													<li key={name}>
 														{isSinglePr ? (
-															<a
-																href={filteredPrs[0].href}
-																target="_blank"
-																rel="noopener noreferrer"
-																className="group"
-															>
-																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
-																	{name}:
-																</span>
+															<a href={filteredPrs[0].href} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-2 flex-wrap">
+																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white transition-colors duration-200">{name}:</span>
+																<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">{filteredPrs[0].label}</span>
+																<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em]">{filteredPrs[0].detail}</span>
 															</a>
 														) : (
 															<>
@@ -631,16 +624,8 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 																	rel="noopener noreferrer"
 																	className="group flex flex-col gap-[3px]"
 																>
-																	<div className="flex items-baseline justify-between gap-4">
-																		<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
-																			{name}
-																		</span>
-																	</div>
-																	<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">
-																		{highlightNumbers(description)}
-																	</span>
-																	<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em] mt-[1px]">
-																		{highlightNumbers(detail)}
+																	<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
+																		{name}
 																	</span>
 																</a>
 																{filteredPrs.length > 0 && (
@@ -651,13 +636,13 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 																					href={pr.href}
 																					target="_blank"
 																					rel="noopener noreferrer"
-																					className="group"
+																					className="group flex items-baseline gap-2"
 																				>
 																					<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
 																						{pr.label}
 																					</span>
 																					<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em]">
-																						{' '}{pr.detail}
+																						{pr.detail}
 																					</span>
 																				</a>
 																			</li>
@@ -676,7 +661,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 						</div>
 					</section>
 
-					{/* ── Videos ─────────────────────────────────── */}
+					{/* ── Videos ─────────────────────────────── */}
 					<section
 						id="panel-videos"
 						role="tabpanel"
