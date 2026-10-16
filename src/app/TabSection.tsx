@@ -617,15 +617,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 														) : (
 															<>
 																<a
-																	href={href}
-																	target="_blank"
-																	rel="noopener noreferrer"
-																	className="group flex flex-col gap-[3px]"
-																>
-																	<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
-																		{name}
-																	</span>
-																</a>
+                 <span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
 																{filteredPrs.length > 0 && (
 																	<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-[#f0efe9]/[0.08]">
 																		{filteredPrs.map((pr) => (
