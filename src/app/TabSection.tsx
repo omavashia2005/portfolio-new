@@ -630,26 +630,28 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 														</span>
 													</a>
 													{prs && (
-														<ul className="mt-3 flex flex-col gap-4 pl-5 border-l border-[#f0efe9]/[0.08]">
+														<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-[#f0efe9]/[0.08]">
 															{prs.filter((pr) => (pr as any).status === status).map((pr) => (
 																<li key={pr.href}>
 																	<a
 																		href={pr.href}
 																		target="_blank"
 																		rel="noopener noreferrer"
-																		className="group flex flex-col gap-[3px]"
+																		className="group"
 																	>
-																		<div className="flex items-baseline gap-2">
+																		<div className="flex items-baseline gap-2 flex-wrap">
 																			<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
 																				{pr.label}
 																			</span>
-																			<span className={`inline-block text-[0.55rem] uppercase tracking-[0.16em] font-mono px-2 py-1 rounded ${status === 'merged' ? 'bg-[#4ade80]/10 text-[#4ade80]' : 'bg-[#f97316]/10 text-[#f97316]'}`}>
-																				{status}
+																			<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em]">
+																				{pr.detail}
 																			</span>
+																			{status !== 'merged' && (
+																				<span className={`inline-block text-[0.55rem] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded ml-auto ${status === 'merged' ? 'bg-[#4ade80]/10 text-[#4ade80]' : 'bg-[#f97316]/10 text-[#f97316]'}`}>
+																					{status}
+																				</span>
+																			)}
 																		</div>
-																		<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em] mt-[1px]">
-																			{pr.detail}
-																		</span>
 																	</a>
 																</li>
 															))}
