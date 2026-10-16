@@ -602,63 +602,73 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 								if (filteredOss.length === 0) return null;
 								return (
 									<div key={status}>
-										<div className="mb-6 flex items-center gap-3">
-											<h3 className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#555]">
-												{status === 'merged' ? 'Merged' : 'Open'}
-											</h3>
-											<span className={`inline-block h-[6px] w-[6px] rounded-full ${status === 'merged' ? 'bg-[#4ade80]' : 'bg-[#f97316]'}`} aria-hidden="true" />
-										</div>
+										<h3 className="mb-6 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#555]">
+											{status === 'merged' ? 'Merged' : 'Open'}
+										</h3>
 										<ul className="flex flex-col gap-7">
-											{filteredOss.map(({ name, description, detail, href, prs }) => (
-												<li key={name} className="flex flex-col gap-[3px]">
-													<a
-														href={href}
-														target="_blank"
-														rel="noopener noreferrer"
-														className="group flex flex-col gap-[3px]"
-													>
-														<div className="flex items-baseline justify-between gap-4">
-															<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
-																{name}
-															</span>
-														</div>
-														<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">
-															{highlightNumbers(description)}
-														</span>
-														<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em] mt-[1px]">
-															{highlightNumbers(detail)}
-														</span>
-													</a>
-													{prs && (
-														<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-[#f0efe9]/[0.08]">
-															{prs.filter((pr) => (pr as any).status === status).map((pr) => (
-																<li key={pr.href}>
-																	<a
-																		href={pr.href}
-																		target="_blank"
-																		rel="noopener noreferrer"
-																		className="group"
-																	>
-																		<div className="flex items-baseline gap-2 flex-wrap">
-																			<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
-																				{pr.label}
-																			</span>
-																			<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em]">
-																				{pr.detail}
-																			</span>
-																			{status !== 'merged' && (
-																				<span className={`inline-block text-[0.55rem] uppercase tracking-[0.16em] font-mono px-2 py-0.5 rounded ml-auto ${status === 'merged' ? 'bg-[#4ade80]/10 text-[#4ade80]' : 'bg-[#f97316]/10 text-[#f97316]'}`}>
-																					{status}
-																				</span>
-																			)}
-																		</div>
-																	</a>
-																</li>
-															))}
-														</ul>
-													)}
-												</li>
-											))}
+											{filteredOss.map(({ name, description, detail, href, prs }) => {
+												const filteredPrs = prs?.filter((pr) => (pr as any).status === status) || [];
+												const isSinglePr = filteredPrs.length === 1;
+
+												return (
+													<li key={name} className="flex flex-col gap-[3px]">
+														{isSinglePr ? (
+															<a
+																href={filteredPrs[0].href}
+																target="_blank"
+																rel="noopener noreferrer"
+																className="group"
+															>
+																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
+																	{name}: <span className="font-mono text-[1rem] md:text-[1.2rem] font-light">{filteredPrs[0].label}</span> {filteredPrs[0].detail}
+																</span>
+															</a>
+														) : (
+															<>
+																<a
+																	href={href}
+																	target="_blank"
+																	rel="noopener noreferrer"
+																	className="group flex flex-col gap-[3px]"
+																>
+																	<div className="flex items-baseline justify-between gap-4">
+																		<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
+																			{name}
+																		</span>
+																	</div>
+																	<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">
+																		{highlightNumbers(description)}
+																	</span>
+																	<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em] mt-[1px]">
+																		{highlightNumbers(detail)}
+																	</span>
+																</a>
+																{filteredPrs.length > 0 && (
+																	<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-[#f0efe9]/[0.08]">
+																		{filteredPrs.map((pr) => (
+																			<li key={pr.href}>
+																				<a
+																					href={pr.href}
+																					target="_blank"
+																					rel="noopener noreferrer"
+																					className="group"
+																				>
+																					<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
+																						{pr.label}
+																					</span>
+																					<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em]">
+																						{' '}{pr.detail}
+																					</span>
+																				</a>
+																			</li>
+																		))}
+																	</ul>
+																)}
+															</>
+														)}
+													</li>
+												);
+											})}
 										</ul>
 									</div>
 								);
