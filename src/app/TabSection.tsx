@@ -276,6 +276,20 @@ const opensource = [
 		],
 	},
 	{
+		name: 'xiaobiaodu/3DRealCar_Toolkit',
+		description: '',
+		detail: '',
+		href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit',
+		prs: [
+			{
+				label: '#39',
+				detail: 'Fixed an infinite loop in the data processing pipeline',
+				href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit/pull/39',
+				status: 'merged' as const,
+			},
+		],
+	},
+	{
 		name: 'langgenius/dify',
 		description: '',
 		detail: '',
@@ -300,20 +314,6 @@ const opensource = [
 				detail: 'feat: adding shape conversion',
 				href: 'https://github.com/excalidraw/excalidraw/pull/11587',
 				status: 'open' as const,
-			},
-		],
-	},
-	{
-		name: 'xiaobiaodu/3DRealCar_Toolkit',
-		description: '',
-		detail: '',
-		href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit',
-		prs: [
-			{
-				label: '#39',
-				detail: 'Fixed an infinite loop in the data processing pipeline',
-				href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit/pull/39',
-				status: 'merged' as const,
 			},
 		],
 	},
@@ -611,10 +611,8 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 												return (
 													<li key={name}>
 														{isSinglePr ? (
-															<a href={filteredPrs[0].href} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-2 flex-wrap">
-																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white transition-colors duration-200">{name}:</span>
-																<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">{filteredPrs[0].label}</span>
-																<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em]">{filteredPrs[0].detail}</span>
+															<a href={filteredPrs[0].href} target="_blank" rel="noopener noreferrer" className="group">
+																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white transition-colors duration-200">{name}: <span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">{filteredPrs[0].label}</span> <span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em]">{filteredPrs[0].detail}</span></span>
 															</a>
 														) : (
 															<>
