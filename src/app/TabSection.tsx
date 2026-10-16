@@ -616,8 +616,9 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 															</a>
 														) : (
 															<>
-																<a
-                 <span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
+																	<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
+																		{name}
+																	</span>
 																{filteredPrs.length > 0 && (
 																	<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-[#f0efe9]/[0.08]">
 																		{filteredPrs.map((pr) => (
