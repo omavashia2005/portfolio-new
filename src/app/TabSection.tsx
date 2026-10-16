@@ -252,13 +252,13 @@ const opensource = [
 				label: '#926',
 				detail: 'Finished a TODO in pingora-header-serde to check file paths and avoid panics on unwrap',
 				href: 'https://github.com/cloudflare/pingora/pull/926',
-				status: 'merged' as const,
+				status: 'open' as const,
 			},
 			{
 				label: '#928',
 				detail: 'Made the pingora-core rustls listener return a Result instead of panicking',
 				href: 'https://github.com/cloudflare/pingora/pull/928',
-				status: 'merged' as const,
+				status: 'open' as const,
 			},
 		],
 	},
@@ -305,10 +305,18 @@ const opensource = [
 		],
 	},
 	{
-		name: '3DRealCar_Toolkit',
+		name: 'xiaobiaodu/3DRealCar_Toolkit',
 		description: '',
-		detail: 'Fixed an infinite loop in the data processing pipeline',
-		href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit/pull/39',
+		detail: '',
+		href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit',
+		prs: [
+			{
+				label: '#39',
+				detail: 'Fixed an infinite loop in the data processing pipeline',
+				href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit/pull/39',
+				status: 'merged' as const,
+			},
+		],
 	},
 	{
 		name: 'nanobot',
