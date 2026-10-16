@@ -242,6 +242,20 @@ const projects = [
 
 const opensource = [
 	{
+		name: 'anomalyco/opentui',
+		description: '',
+		detail: '',
+		href: 'https://github.com/anomalyco/opentui',
+		prs: [
+			{
+				label: '#1694',
+				detail: "Fixes #1693 core: report why a CliRenderer was destroyed (Ctrl+C, signal, output failure, or destroy())",
+				href: 'https://github.com/anomalyco/opentui/pull/1694',
+				status: 'open' as const,
+			}
+		]
+	},
+	{
 		name: 'cloudflare/pingora',
 		description: '',
 		detail: '',
@@ -620,9 +634,9 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 															</a>
 														) : (
 															<>
-																	<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
-																		{name}
-																	</span>
+																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
+																	{name}
+																</span>
 																{filteredPrs.length > 0 && (
 																	<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-[#f0efe9]/[0.08]">
 																		{filteredPrs.map((pr) => (
