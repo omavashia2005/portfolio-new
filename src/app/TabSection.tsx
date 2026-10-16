@@ -620,7 +620,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 																className="group"
 															>
 																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
-																	{name}: <span className="font-mono text-[1rem] md:text-[1.2rem] font-light">{filteredPrs[0].label}</span> {filteredPrs[0].detail}
+																	{name}:
 																</span>
 															</a>
 														) : (
