@@ -323,38 +323,6 @@ const opensource = [
 			},
 		],
 	},
-	{
-		name: 'excalidraw/excalidraw',
-		description: '',
-		detail: '',
-		href: 'https://github.com/excalidraw/excalidraw',
-		prs: [
-			{
-				label: '#11587',
-				detail: 'feat: adding shape conversion',
-				href: 'https://github.com/excalidraw/excalidraw/pull/11587',
-				status: 'open' as const,
-			},
-		],
-	},
-	{
-		name: 'nanobot',
-		description: '',
-		detail: 'Persistent memory integration',
-		href: 'https://github.com/omavashia2005/nanobot',
-	},
-	{
-		name: 'cased/sandboxes',
-		description: '',
-		detail: 'Extended the SDK to support for rich code execution output (built for dify-cloud-sandboxes)',
-		href: 'https://github.com/omavashia2005/sandboxes/tree/feat/e2b-code-interpreter',
-	},
-	{
-		name: 'Dify',
-		description: '',
-		detail: 'Drop-in cloud sandbox router for code execution on Dify',
-		href: 'https://github.com/omavashia2005/dify-cloud-sandboxes',
-	},
 ];
 
 type Tab = 'about' | 'experience' | 'projects' | 'oss' | 'videos' | 'reading';
