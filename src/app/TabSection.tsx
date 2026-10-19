@@ -248,11 +248,17 @@ const opensource = [
 		href: 'https://github.com/anomalyco/opentui',
 		prs: [
 			{
+				label: '#1701',
+				detail: 'fix: Kitty graphics queries are answered OK, but images are never shown',
+				href: 'https://github.com/anomalyco/opentui/pull/1701',
+				status: 'open' as const,
+			}, 
+			{
 				label: '#1694',
 				detail: "Fixes #1693 core: report why a CliRenderer was destroyed (Ctrl+C, signal, output failure, or destroy())",
 				href: 'https://github.com/anomalyco/opentui/pull/1694',
 				status: 'open' as const,
-			}
+			}, 
 		]
 	},
 	{
