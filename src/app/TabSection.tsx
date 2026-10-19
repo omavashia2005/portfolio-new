@@ -282,6 +282,20 @@ const opensource = [
 		],
 	},
 	{
+		name: 'apache/texera',
+		description: '',
+		detail: '',
+		href: 'https://github.com/apache/texera',
+		prs: [
+			{
+				label: '#9020',
+				detail: 'refactor(frontend): drop unused generated protobuf TypeScript',
+				href: 'https://github.com/apache/texera/pull/9020',
+				status: 'merged' as const,
+			},
+		],
+	},
+	{
 		name: 'imkerberos/nvim-gpui',
 		description: '',
 		detail: '',
