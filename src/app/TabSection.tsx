@@ -242,23 +242,31 @@ const projects = [
 
 const opensource = [
 	{
+		name: 'rust-lang/rust-clippy',
+		description: '',
+		detail: '',
+		href: 'https://github.com/rust-lang/rust-clippy',
+		prs: [
+			{
+				label: '#17902',
+				detail: "Add call_missing_target_feature restriction and MIR lints",
+				href: 'https://github.com/rust-lang/rust-clippy/pull/17902',
+				status: 'open' as const,
+			},
+		]
+	},
+	{
 		name: 'anomalyco/opentui',
 		description: '',
 		detail: '',
 		href: 'https://github.com/anomalyco/opentui',
 		prs: [
 			{
-				label: '#1701',
-				detail: 'fix: Kitty graphics queries are answered OK, but images are never shown',
-				href: 'https://github.com/anomalyco/opentui/pull/1701',
-				status: 'open' as const,
-			}, 
-			{
 				label: '#1694',
 				detail: "Fixes #1693 core: report why a CliRenderer was destroyed (Ctrl+C, signal, output failure, or destroy())",
 				href: 'https://github.com/anomalyco/opentui/pull/1694',
 				status: 'open' as const,
-			}, 
+			},
 		]
 	},
 	{
