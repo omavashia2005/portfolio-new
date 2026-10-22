@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Fragment, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from './icons';
 import { isTab, tabs, type Tab } from './tabs';
@@ -410,7 +411,10 @@ type TabSectionProps = {
 
 export default function TabSection({ initialTab, githubContributions, mobileSocials, identity }: TabSectionProps) {
 	// the tab lives in the URL (?tab=), so the server renders the right one: refresh, back and shared links never flash home
-	const [active, setActive] = useState<Tab>(isTab(initialTab) ? initialTab : 'about');
+	// read the live URL too: on browser-back Next reuses its cached render of "/" from before the tab
+	// was picked, so initialTab can be stale while the URL (kept in sync by replaceState) is right
+	const urlTab = useSearchParams().get('tab');
+	const [active, setActive] = useState<Tab>(isTab(urlTab) ? urlTab : isTab(initialTab) ? initialTab : 'about');
 
 	const selectTab = (tab: Tab) => {
 		setActive(tab);
