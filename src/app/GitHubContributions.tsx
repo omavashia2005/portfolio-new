@@ -52,8 +52,8 @@ async function getPublicCalendar(): Promise<ContributionCalendar | null> {
         headers: {
           Accept: 'application/json',
         },
-        // ponytail: hourly refresh; lower revalidate if you want it fresher
-        next: { revalidate: 3600 },
+        // refreshed every 2h
+        next: { revalidate: 7200 },
       },
     );
 

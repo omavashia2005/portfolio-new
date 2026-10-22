@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Fragment, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from './icons';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -377,8 +377,6 @@ const opensource = [
 
 type PrStatus = 'merged' | 'review' | 'open';
 
-const ossPrs = opensource.flatMap((repo): { status: PrStatus }[] => repo.prs);
-
 const statusLabel: Record<PrStatus, string> = { merged: 'Merged', review: 'In review', open: 'Open' };
 
 // icon by org, then repo
@@ -398,6 +396,8 @@ function RepoIcon({ name }: { name: string }) {
 type Tab = 'about' | 'experience' | 'projects' | 'oss' | 'videos' | 'reading';
 const tabs: Tab[] = ['about', 'projects', 'oss', 'experience', 'videos', 'reading'];
 
+const tabLabel: Record<Tab, string> = { about: 'home', projects: 'projects', oss: 'open source', experience: 'experience', videos: 'videos', reading: 'reading' };
+
 const tabId = (tab: Tab) => tab.replace(' ', '-');
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -411,11 +411,27 @@ type TabSectionProps = {
 export default function TabSection({ githubContributions, mobileSocials, identity }: TabSectionProps) {
 	const [active, setActive] = useState<Tab>('about');
 
+	// restore the last tab this session (e.g. coming back from /blog)
+	useEffect(() => {
+		try {
+			const saved = sessionStorage.getItem('tab') as Tab | null;
+			if (saved && tabs.includes(saved)) setActive(saved);
+		} catch {}
+	}, []);
+
+	const selectTab = (tab: Tab) => {
+		setActive(tab);
+		try {
+			sessionStorage.setItem('tab', tab);
+		} catch {}
+	};
+
 	return (
 		<div className="anim anim-4 w-full max-w-[420px] md:max-w-[900px] lg:max-w-[980px]">
 
 			{/* ── Tab buttons ──────────────────────────────────────────────── */}
-			<div className="tabs-scroll mb-8 flex items-center gap-x-6 overflow-x-auto pb-1 md:justify-between">
+			{/* phones: fixed to the bottom of the screen; desktop: inline above the content */}
+			<div className="tabs-scroll fixed inset-x-0 bottom-0 z-40 flex items-center gap-x-6 overflow-x-auto border-t border-(--c-fg)/[0.08] bg-(--c-bg) px-6 pr-14 pt-5 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:static md:z-auto md:mb-8 md:justify-between md:border-0 md:bg-transparent md:px-0 md:pt-0 md:pb-1">
 				<div className="contents" role="tablist" aria-label="Portfolio sections">
 					{tabs.map((tab) => (
 						<Fragment key={tab}>
@@ -425,7 +441,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 								role="tab"
 								aria-selected={active === tab}
 								aria-controls={`panel-${tabId(tab)}`}
-								onClick={() => setActive(tab)}
+								onClick={() => selectTab(tab)}
 								className={[
 									'shrink-0 whitespace-nowrap font-body text-[0.78rem] md:text-[0.84rem] tracking-[0.02em] transition-colors duration-200 leading-none',
 									active === tab
@@ -433,7 +449,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 										: 'text-(--c-666) hover:text-(--c-fg)/50',
 								].join(' ')}
 							>
-								{tab === 'about' ? 'home' : tab}
+								{tabLabel[tab]}
 								<span
 									aria-hidden="true"
 									className={[
@@ -472,10 +488,20 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 					>
 						<div className="flex w-full flex-col gap-5">
 							<p>
-								{"Hey! I'm Om. I love building stuff mainly in Python, Go, Rust, and TypeScript. Check out the projects and OSS tabs for some stuff that did manage to make it outside the private repos :)."}
+								{"Hey! I'm Om. I love building stuff mainly in Go, Rust, and TypeScript, and Python."}
+								{/* the tagline is hidden under the photo on phones, so fold it in here */}
+								<span className="md:hidden">
+									{" I'm interested in various parts of the stack and different domains (distributed systems, low level programming, ML/AI, product, and design). Currently CS Senior at ASU"}
+								</span>
+							</p>
+							<p className="hidden md:block">
+								{"Check out the projects and OSS tabs for some stuff that did manage to make it outside the private repos :)."}
 							</p>
 							<p>
-								In the past, I have interned at <span className="whitespace-nowrap"><a href="https://www.wellsfargo.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>Wells Fargo</a><Icon name="wellsfargo" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> and <span className="whitespace-nowrap"><a href="https://ipauthor.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>IPAuthor</a><Icon name="ipauthor" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" />,</span> and for the past year have been working on a cool research project with <span className="whitespace-nowrap"><a href="https://faculty.engineering.asu.edu/yezhouyang/" target="_blank" rel="noopener noreferrer" className={aboutLink}>ASU APG</a> &amp; <a href="https://amrd.toyota.com/division/trina/" target="_blank" rel="noopener noreferrer" className={aboutLink}>TRINA</a><Icon name="asu" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /><Icon name="trina" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> building in the self-driving vehicle space.
+								For the past year, I have been working on a cool research project with <a href="https://faculty.engineering.asu.edu/yezhouyang/" target="_blank" rel="noopener noreferrer" className={aboutLink}>ASU Active Perception <span className="whitespace-nowrap">Group<Icon name="asu" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a> &amp; <a href="https://amrd.toyota.com/division/trina/" target="_blank" rel="noopener noreferrer" className={aboutLink}>Toyota Research Institute of North <span className="whitespace-nowrap">America<Icon name="trina" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a> building in the autonomous vehicle space.
+							</p>
+							<p>
+								In the past, I have interned at <span className="whitespace-nowrap"><a href="https://www.wellsfargo.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>Wells Fargo</a><Icon name="wellsfargo" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> and <span className="whitespace-nowrap"><a href="https://ipauthor.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>IPAuthor</a><Icon name="ipauthor" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span>.
 							</p>
 							<p>
 								{"HMU on X if anything around here looks interesting / wanna build together / anything else!"}
@@ -498,25 +524,22 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 							{experience.map(({ company, icon, role, location, date, description, ...rest }) => {
 								const link = 'link' in rest ? (rest as { link: string }).link : undefined;
 								return (
-									<li key={company} className="group flex flex-col gap-[3px]">
-										<div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-4">
-											<span className="flex items-start gap-2 font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
-												<Icon name={icon} size={16} className="mt-[3px]" />
-												<span className="whitespace-pre-line md:whitespace-normal">{company}</span>
-											</span>
-											<span className="font-body text-[0.62rem] text-(--c-666) tracking-[0.02em] md:shrink-0">
-												{date}
-											</span>
-										</div>
-										<div className="flex flex-col md:flex-row md:items-baseline md:justify-between md:gap-4">
-											<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
-												{role}
-											</span>
-											<span className="font-body text-[0.62rem] text-(--c-666) tracking-[0.02em] md:shrink-0">
-												{location}
-											</span>
-										</div>
-										<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
+									<li key={company} className="group grid grid-flow-row-dense grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-[3px]">
+										{/* phone: name full width, then role|date, description|location. desktop: name|date, role|location, description */}
+										<span className="col-span-2 mb-1 flex items-start gap-2 font-display text-[1.15rem] md:col-span-1 md:mb-0 md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
+											<Icon name={icon} size={16} className="mt-[3px]" />
+											<span className="whitespace-pre-line md:whitespace-normal">{company}</span>
+										</span>
+										<span className="col-start-2 text-right font-body text-[0.62rem] text-(--c-666) tracking-[0.02em]">
+											{date}
+										</span>
+										<span className="col-start-1 font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
+											{role}
+										</span>
+										<span className="col-start-2 text-right font-body text-[0.62rem] text-(--c-666) tracking-[0.02em]">
+											{location}
+										</span>
+										<span className="col-start-1 md:col-span-2 font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
 											{highlightNumbers(description)}
 											{link && (
 												<>
@@ -656,11 +679,6 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 						data-active={active === 'oss'}
 						className="tab-panel"
 					>
-						<p className="mb-10 font-body text-[0.75rem] md:text-[0.82rem] text-(--c-a0a0a0) tracking-[0.01em]">
-							<span className="text-(--c-fg)">{ossPrs.length}</span> PRs across{' '}
-							<span className="text-(--c-fg)">{opensource.length}</span> repos,{' '}
-							<span className="text-(--c-green)">{ossPrs.filter((pr) => pr.status === 'merged').length}</span> merged
-						</p>
 						<div className="flex flex-col gap-10">
 							{(['merged', 'review', 'open'] as const).map((status) => {
 								const repos = opensource
@@ -688,11 +706,10 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 																{description}
 															</span>
 														</a>
-														<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-(--c-fg)/[0.08]">
+														<ul className="mt-3 flex flex-col gap-3">
 															{prs.map((pr) => (
 																<li key={pr.href}>
 																	<a href={pr.href} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-2">
-																	<Icon name={status} size={11} className="relative top-[1px]" />
 																		<span className="shrink-0 font-body text-[0.71rem] md:text-[0.78rem] tracking-[0.01em] text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
 																			{pr.label}
 																		</span>

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import GitHubContributions from './GitHubContributions';
 import TabSection from './TabSection';
 
-export const revalidate = 3600;
+export const revalidate = 7200;
 
 // ── SVG icons ────────────────────────────────────────────────────────────────
 
@@ -30,23 +30,42 @@ function IconGitHub() {
   );
 }
 
+function IconYouTube() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+    </svg>
+  );
+}
+
+function IconMail() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M1.75 3h20.5c.966 0 1.75.784 1.75 1.75v14a1.75 1.75 0 0 1-1.75 1.75H1.75A1.75 1.75 0 0 1 0 18.75v-14C0 3.784.784 3 1.75 3ZM1.5 7.412V18.75c0 .138.112.25.25.25h20.5a.25.25 0 0 0 .25-.25V7.412l-9.52 6.433c-.592.4-1.368.4-1.96 0Zm0-2.662v.852l10.36 7a.25.25 0 0 0 .28 0l10.36-7V4.75a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Z" />
+    </svg>
+  );
+}
+
 // ── Socials data ──────────────────────────────────────────────────────────────
 
 const socials = [
   { label: 'X',        href: 'https://x.com/avashiaom', Icon: IconX },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/omavashia/', Icon: IconLinkedIn },
   { label: 'GitHub',   href: 'https://github.com/omavashia2005', Icon: IconGitHub },
+  { label: 'YouTube',  href: 'https://www.youtube.com/@omavashia', Icon: IconYouTube },
+  { label: 'Email',    href: 'mailto:omavashia1233@gmail.com', Icon: IconMail },
 ] as const;
 
 function SocialLinks({ className = '' }: { className?: string }) {
   return (
-    <nav className={`flex items-center gap-[22px] ${className}`} aria-label="Social links">
+    <nav className={`flex items-center gap-x-[18px] gap-y-3 md:flex-wrap md:gap-x-[22px] ${className}`} aria-label="Social links">
+      <span className="shrink-0 whitespace-nowrap md:basis-full font-body text-[0.75rem] tracking-[0.01em] text-(--c-888)">Find me on:</span>
       {socials.map(({ label, href, Icon }) => (
         <a
           key={label}
           href={href}
           aria-label={label}
-          target="_blank"
+          target={href.startsWith('mailto:') ? undefined : '_blank'}
           rel="noopener noreferrer"
           className="text-(--c-666) hover:text-(--c-fg) transition-colors duration-200"
         >
@@ -61,7 +80,7 @@ function SocialLinks({ className = '' }: { className?: string }) {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-(--c-bg) flex flex-col items-center justify-start px-6 py-16 md:px-12 md:py-24 lg:px-20">
+    <main className="min-h-screen bg-(--c-bg) flex flex-col items-center justify-start px-6 pt-16 pb-32 md:px-12 md:py-24 lg:px-20">
       <TabSection
         githubContributions={<GitHubContributions />}
         mobileSocials={<SocialLinks />}
@@ -69,7 +88,7 @@ export default function Home() {
             <div className="md:w-[250px] lg:w-[280px] md:shrink-0 flex flex-col">
 
               {/* Hero */}
-              <div className="anim anim-1 flex items-center gap-5 md:flex-col md:items-start md:gap-5 mb-8 md:mb-0">
+              <div className="flex items-center gap-5 md:flex-col md:items-start md:gap-5 mb-8 md:mb-0">
                 <div
                   className="shrink-0 rounded-full overflow-hidden"
                   style={{ width: 78, height: 78, outline: '1px solid color-mix(in srgb, var(--c-fg) 8%, transparent)', outlineOffset: '2px' }}
@@ -88,9 +107,13 @@ export default function Home() {
                 </h1>
               </div>
 
+              <p className="hidden md:block md:mt-6 font-body text-[0.75rem] leading-[1.7] tracking-[0.01em] text-(--c-888)">
+                Software Engineer interested in various parts of the stack and different domains (distributed systems, low level programming, ML/AI, product, and design). Currently CS Senior at ASU
+              </p>
+
               {/* Socials + Languages — tucked below name on desktop */}
               <div className="hidden flex-col gap-4 md:mt-9 md:flex">
-                <SocialLinks className="anim anim-2" />
+                <SocialLinks />
               </div>
 
             </div>

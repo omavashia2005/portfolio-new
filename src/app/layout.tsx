@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Fragment_Mono, JetBrains_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
@@ -32,6 +32,9 @@ const mono = JetBrains_Mono({
   variable: '--font-mono-face',
   display: 'swap',
 });
+
+// lets the phone tab bar pad for the home indicator via env(safe-area-inset-bottom)
+export const viewport: Viewport = { viewportFit: 'cover' };
 
 export const metadata: Metadata = {
   title: 'Om Avashia',

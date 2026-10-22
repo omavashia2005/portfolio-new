@@ -48,7 +48,9 @@ async function highlight(code: string, lang: BundledLanguage = 'tsx'): Promise<s
   try {
     return await codeToHtml(code, {
       lang,
-      themes: { light: 'github-light', dark: 'github-dark' }
+      themes: { light: 'github-light', dark: 'github-dark' },
+      // no inline default: globals.css picks --shiki-light / --shiki-dark from the site theme
+      defaultColor: false
     })
   } catch {
     const escaped = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -90,7 +92,7 @@ function CodeBlockCopyButton({ code, className, ...props }: React.ComponentProps
       aria-label={copied ? 'Copied' : 'Copy code'}
       onClick={handleCopy}
       className={cn(
-        'cn-code-block-copy text-muted-foreground hover:text-foreground inline-flex items-center justify-center rounded-md p-1.5 transition-colors',
+        'cn-code-block-copy text-(--c-666) hover:text-(--c-fg) inline-flex items-center justify-center rounded-md p-1.5 transition-colors',
         className
       )}
       {...props}
@@ -174,7 +176,7 @@ function CodeBlockPane({
                         className={cn('flex items-stretch px-4 py-[0.5px]', isHighlighted && highlightClassName)}
                       >
                         {showLineNumbers && (
-                          <span className='text-muted-foreground/50 mr-4 w-4 shrink-0 text-right font-mono text-xs leading-relaxed select-none'>
+                          <span className='text-(--c-555) mr-4 w-4 shrink-0 text-right font-mono text-xs leading-relaxed select-none'>
                             {lineNumber}
                           </span>
                         )}
@@ -256,12 +258,12 @@ function CodeBlock({
   return (
     <div
       data-slot='code-block'
-      className={cn('cn-code-block bg-muted/50 border-border overflow-hidden rounded-xl border text-sm', className)}
+      className={cn('cn-code-block bg-(--c-fg)/[0.04] border-(--c-fg)/[0.1] overflow-hidden rounded-xl border text-sm', className)}
       {...props}
     >
       <div
         data-slot='code-block-header'
-        className='cn-code-block-header border-border flex items-center justify-between gap-2 border-b'
+        className='cn-code-block-header border-(--c-fg)/[0.1] flex items-center justify-between gap-2 border-b'
       >
         {isMulti ? (
           <Tabs value={activeTab} onValueChange={setActiveTab} className='cn-code-block-tabs flex-1'>
@@ -280,7 +282,7 @@ function CodeBlock({
         ) : (
           <span
             data-slot='code-block-filename'
-            className='cn-code-block-filename text-muted-foreground px-3 py-2 text-xs font-medium'
+            className='cn-code-block-filename text-(--c-666) px-3 py-2 text-xs font-medium'
           >
             {normalizedFiles[0].filename}
           </span>

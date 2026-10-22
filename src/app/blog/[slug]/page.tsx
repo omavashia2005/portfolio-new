@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getBlogPost, getBlogPosts } from '../posts';
+import Contents from './Contents';
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -42,9 +43,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-(--c-bg) px-6 py-14 md:px-12 md:py-20">
+    <main className="min-h-screen bg-(--c-bg) px-6 pt-14 pb-32 md:px-12 md:py-20">
       <article className="mx-auto w-full max-w-[720px]">
-        <nav className="anim anim-1 flex items-center gap-2 font-body text-[0.75rem] tracking-[0.02em] text-(--c-666)">
+        {/* phones: fixed bottom bar like the home tabs; desktop: inline breadcrumb */}
+        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-(--c-fg)/[0.08] bg-(--c-bg) px-6 pr-14 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] md:static md:z-auto md:border-0 md:bg-transparent md:p-0 flex items-center gap-2 font-body text-[0.75rem] tracking-[0.02em] text-(--c-666)">
           <Link href="/" className="transition-colors duration-200 hover:text-(--c-fg)">
             home
           </Link>
@@ -54,7 +56,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
         </nav>
 
-        <header className="anim anim-2 mt-12 border-b border-(--c-fg)/[0.07] pb-8">
+        {/* relative wrapper so the contents sidebar starts level with the date */}
+        <div className="relative md:mt-12">
+        <Contents />
+        <header className="anim anim-2 border-b border-(--c-fg)/[0.07] pb-8">
           <div className="font-body text-[0.55rem] uppercase tracking-[0.14em] text-(--c-666)">
             <time dateTime={post.date}>{post.displayDate}</time>
           </div>
@@ -67,6 +72,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </header>
 
         <div className="blog-body anim anim-3 mt-10">{post.content}</div>
+        </div>
       </article>
     </main>
   );

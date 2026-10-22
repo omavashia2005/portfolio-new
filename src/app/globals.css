@@ -136,13 +136,14 @@
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
+/* backwards (not both): once finished the animation leaves no transform behind,
+   which would otherwise trap position: fixed children (the phone tab bar) */
 .anim {
-  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-  opacity: 0;
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .anim-1 { animation-delay: 0.05s; }
@@ -208,6 +209,11 @@
   letter-spacing: 0;
   line-height: 1.1;
   color: var(--c-fg);
+}
+
+/* room above a heading when jumped to from the contents */
+.blog-body :is(h2, h3) {
+  scroll-margin-top: 2.5rem;
 }
 
 .blog-body h3 {
@@ -392,11 +398,32 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-.dark .shiki,
-.dark .shiki span {
+/* code highlighting follows the site theme (same selectors as the theme tokens), not shadcn's .dark */
+.shiki,
+.shiki span {
   background-color: transparent !important;
   color: var(--shiki-dark) !important;
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .shiki,
+  :root:not([data-theme='dark']) .shiki span {
+    background-color: transparent !important;
+    color: var(--shiki-light) !important;
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
+}
+
+:root[data-theme='light'] .shiki,
+:root[data-theme='light'] .shiki span {
+  background-color: transparent !important;
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
 }
