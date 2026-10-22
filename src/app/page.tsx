@@ -2,6 +2,9 @@ import Image from 'next/image';
 import GitHubContributions from './GitHubContributions';
 import TabSection from './TabSection';
 
+// rendered per request (reads ?tab= / ?from=), and Cloudflare Pages runs those on the edge
+export const runtime = 'edge';
+
 
 // ── SVG icons ────────────────────────────────────────────────────────────────
 

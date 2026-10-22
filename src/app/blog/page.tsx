@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { getBlogPosts } from './posts';
 import { isTab } from '../tabs';
 
+// rendered per request (reads ?tab= / ?from=), and Cloudflare Pages runs those on the edge
+export const runtime = 'edge';
+
 export const metadata: Metadata = {
   title: 'Writing | Om Avashia',
   description: 'Notes, build logs, and writing from Om Avashia.',
