@@ -11,20 +11,21 @@ export default function BlogPage() {
   const posts = getBlogPosts();
 
   return (
-    <main className="min-h-screen bg-[#080808] px-6 py-14 md:px-12 md:py-20">
+    <main className="min-h-screen bg-(--c-bg) px-6 py-14 md:px-12 md:py-20">
       <div className="mx-auto w-full max-w-[720px]">
-        <Link
-          href="/"
-          className="anim anim-1 font-mono text-[0.67rem] uppercase tracking-[0.2em] text-[#666] transition-colors duration-200 hover:text-[#f0efe9]/70"
-        >
-          back
-        </Link>
+        <nav className="anim anim-1 flex items-center gap-2 font-body text-[0.75rem] tracking-[0.02em] text-(--c-666)">
+          <Link href="/" className="transition-colors duration-200 hover:text-(--c-fg)">
+            home
+          </Link>
+          <span aria-hidden="true" className="text-(--c-444)">/</span>
+          <span aria-current="page" className="text-(--c-aaa)">writing</span>
+        </nav>
 
-        <header className="anim anim-2 mt-12 border-b border-[#f0efe9]/[0.07] pb-8">
-          <h1 className="font-cormorant text-[3rem] font-light leading-none text-[#f0efe9] md:text-[4rem]">
+        <header className="anim anim-2 mt-12 border-b border-(--c-fg)/[0.07] pb-8">
+          <h1 className="font-display text-[3rem] font-light leading-none text-(--c-fg) md:text-[4rem]">
             Writing
           </h1>
-          <p className="mt-4 max-w-prose font-mono text-[0.85rem] leading-[1.8] tracking-[0.03em] text-[#888] md:text-[0.94rem]">
+          <p className="mt-4 max-w-prose font-body text-[0.85rem] leading-[1.8] tracking-[0.01em] text-(--c-888) md:text-[0.94rem]">
 	  yapping
           </p>
         </header>
@@ -35,14 +36,14 @@ export default function BlogPage() {
               <li key={post.slug} className="group">
                 <Link href={`/blog/${post.slug}`} className="block">
                   <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between md:gap-6">
-                    <h2 className="font-cormorant text-[1.7rem] font-light leading-tight text-[#f0efe9] transition-colors duration-200 group-hover:text-white md:text-[2rem]">
+                    <h2 className="font-display text-[1.7rem] font-light leading-tight text-(--c-fg) transition-colors duration-200 group-hover:text-(--c-strong) md:text-[2rem]">
                       {post.title}
                     </h2>
-                    <span className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[#666] md:shrink-0">
+                    <span className="font-body text-[0.55rem] uppercase tracking-[0.14em] text-(--c-666) md:shrink-0">
                       {post.displayDate}
                     </span>
                   </div>
-                  <p className="mt-2 max-w-prose font-mono text-[0.81rem] leading-[1.75] tracking-[0.03em] text-[#888] md:text-[0.87rem]">
+                  <p className="mt-2 max-w-prose font-body text-[0.81rem] leading-[1.75] tracking-[0.01em] text-(--c-888) md:text-[0.87rem]">
                     {post.description}
                   </p>
                 </Link>

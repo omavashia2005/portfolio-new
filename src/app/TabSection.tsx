@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { Fragment, useState, type ReactNode } from 'react';
+import { Icon, type IconName } from './icons';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 const experience = [
 	{
 		company: 'ASU Active Perception Group + Toyota Research Institute (TRINA)',
+		icon: 'trina' as IconName,
 		role: 'Computer Vision Researcher',
 		location: 'Tempe, AZ',
 		date: 'Nov 2025 – Present',
@@ -15,6 +17,7 @@ const experience = [
 	},
 	{
 		company: 'Wells Fargo',
+		icon: 'wellsfargo' as IconName,
 		role: 'Software Engineering Intern',
 		location: 'Phoenix, AZ',
 		date: 'May 2026 – Aug 2026',
@@ -22,6 +25,7 @@ const experience = [
 	},
 	{
 		company: 'IPAuthor',
+		icon: 'ipauthor' as IconName,
 		role: 'Software Engineering Intern',
 		location: 'San Mateo, CA',
 		date: 'May 2025 – Aug 2025',
@@ -30,15 +34,18 @@ const experience = [
 	},
 ];
 
+const aboutLink = 'underline underline-offset-4 decoration-(--c-fg)/15 hover:text-(--c-fg) hover:decoration-(--c-fg)/60 transition-colors duration-200';
+
 // Wraps numbers like 700+, 160K, 6ms, 70% in a brighter span.
 const highlightNumbers = (text: string) =>
 	text.split(/((?<![A-Za-z\d])\d[\d,.]*(?:K|k|ms|%|x)?\+?(?![A-Za-z]))/).map((part, i) =>
-		i % 2 ? <span key={i} className="text-[#f0efe9]">{part}</span> : part
+		i % 2 ? <span key={i} className="text-(--c-green)">{part}</span> : part
 	);
 
 const readingList = [
 	{
 		title: 'Yes, and...',
+		icon: 'htmx' as IconName,
 		author: 'Carson Gross',
 		href: 'https://htmx.org/essays/yes-and/',
 		note: 'Helped me rethink things as a soon-to-be newgrad',
@@ -46,6 +53,7 @@ const readingList = [
 	},
 	{
 		title: '39.78%',
+		icon: 'substack' as IconName,
 		author: 'chris',
 		href: 'https://cwispy.substack.com/p/3978',
 		note: 'Running 10 Claudes in parallel gives me the same ADHD',
@@ -53,6 +61,7 @@ const readingList = [
 	},
 	{
 		title: 'How we built Pingora, the proxy that connects Cloudflare to the Internet',
+		icon: 'cloudflare' as IconName,
 		author: 'Yuchen Wu & Andrew Hauck',
 		href: 'https://blog.cloudflare.com/how-we-built-pingora-the-proxy-that-connects-cloudflare-to-the-internet/',
 		note: 'Encouraged me to pick up Rust and open a couple PRs to Pingora',
@@ -60,6 +69,7 @@ const readingList = [
 	},
 	{
 		title: "How we saved 100 terabytes of memory by optimizing 1.1.1.1's DNS cache",
+		icon: 'cloudflare' as IconName,
 		author: 'Sebastiaan Neuteboom',
 		href: 'https://blog.cloudflare.com/dns-cache-memory-optimization-1111/',
 		note: (
@@ -69,7 +79,7 @@ const readingList = [
 					href="https://youtu.be/dCwWXEI1-lA"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="underline underline-offset-2 decoration-[#f0efe9]/15 hover:text-[#f0efe9]/70"
+					className="underline underline-offset-2 decoration-(--c-fg)/15 hover:text-(--c-fg)/70"
 				>
 					ThePrimeagen cover it
 				</a>
@@ -79,6 +89,7 @@ const readingList = [
 	},
 	{
 		title: 'You Have to Feel It',
+		icon: 'ghostty' as IconName,
 		author: 'Mitchell Hashimoto',
 		href: 'https://mitchellh.com/writing/feel-it',
 		note: 'Guiding light',
@@ -86,6 +97,7 @@ const readingList = [
 	},
 	{
 		title: 'Rewriting Bun in Rust',
+		icon: 'bun' as IconName,
 		author: 'Jarred Sumner',
 		href: 'https://bun.com/blog/bun-in-rust',
 		note: 'Tokenmaxxing → engineering with agents',
@@ -93,6 +105,7 @@ const readingList = [
 	},
 	{
 		title: 'We Found a Ticking Time Bomb in macOS TCP Networking',
+		icon: 'photon' as IconName,
 		author: 'Photon',
 		href: 'https://photon.codes/blog/we-found-a-ticking-time-bomb-in-macos-tcp-networking',
 		note: 'An all-time favorite for how good technical writing makes complex stuff easy to digest',
@@ -100,6 +113,7 @@ const readingList = [
 	},
 	{
 		title: 'Why is quality so rare',
+		icon: 'linear' as IconName,
 		author: 'Karri Saarinen, Co-Founder of Linear',
 		href: 'https://linear.app/now/why-is-quality-so-rare',
 		note: 'A good framework for trying to stand out in the era of agents',
@@ -107,6 +121,7 @@ const readingList = [
 	},
 	{
 		title: 'Output isn\'t design',
+		icon: 'linear' as IconName,
 		author: 'Karri Saarinen, Co-Founder of Linear',
 		href: 'https://linear.app/now/output-isn-t-design',
 		note: 'The hard part of design is rarely generating the form. It is understanding the problem well enough to know what and how something should exist at all',
@@ -162,7 +177,7 @@ const readingList = [
 					href="https://en.wikipedia.org/wiki/Haider_(film)"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="underline underline-offset-2 decoration-[#f0efe9]/15 hover:text-[#f0efe9]/70"
+					className="underline underline-offset-2 decoration-(--c-fg)/15 hover:text-(--c-fg)/70"
 				>
 					Haider
 				</a>
@@ -173,6 +188,11 @@ const readingList = [
 ];
 
 const readingCategories = ['tech', 'design & taste', 'literature'];
+const categoryIcon: Record<string, { name: IconName; color: string }> = {
+	tech: { name: 'code', color: 'var(--c-green)' },
+	'design & taste': { name: 'paintbrush', color: 'var(--c-violet)' },
+	literature: { name: 'book', color: 'var(--c-amber)' },
+};
 
 const videos = [
 	{
@@ -192,48 +212,56 @@ const videos = [
 const projects = [
 	{
 		name: 'emberdb',
+		icon: 'go' as IconName,
 		description: 'Blazing fast distributed Redis-compatible key-value store',
 		detail: "Profiled MSET/MGET lock contention and replaced Go's global map with thread-safe sharded maps, doubling SET throughput from 160K to 320K ops/s and halving latency from 6ms to 3ms at 100 concurrent clients",
 		href: 'https://github.com/omavashia2005/emberdb',
 	},
 	{
 		name: 'hydra',
+		icon: 'typescript' as IconName,
 		description: 'Run 10+ coding agents in your terminal parallely',
 		detail: 'Plus features like voice mode, hassle-free worktrees, continuous sessions between different agents, and more',
 		href: 'https://github.com/gholtzap/hydra',
 	},
 	{
 		name: 'yank',
+		icon: 'gnubash' as IconName,
 		description: 'Copy Claude Code (CLI) responses directly to your clipboard',
 		detail: '1200+ downloads on npm',
 		href: 'https://github.com/omavashia2005/yank',
 	},
 	{
 		name: 'ai-tool-elements',
+		icon: 'typescript' as IconName,
 		description: 'UI library for agent connectors',
 		detail: '700+ downloads in its first week, exposing 1200+ tool connectors through a single unified API',
 		href: 'https://ai-tool-elements.vercel.app',
 	},
 	{
 		name: 'agentgit',
+		icon: 'typescript' as IconName,
 		description: '3D visualizer for Claude Code sessions',
 		detail: '500+ downloads on npm',
 		href: 'https://github.com/omavashia2005/agentgit',
 	},
 	{
 		name: "ShadeASU",
+		icon: 'javascript' as IconName,
 		description: '3D campus navigator that plots the shadiest routes between buildings by calculating real-time shadows from sun position',
 		detail: 'Integrated geospatial datasets with solar position algorithms to dynamically shade building geometries; pathfinding optimizes for both thermal comfort and travel time across 600+ acres',
 		href: 'https://shadeasu.pages.dev/',
 	},
 	{
 		name: "dash",
+		icon: 'rust' as IconName,
 		description: 'A geometry dash clone in the terminal in Rust',
 		detail: 'Building a lot from scratch like game physics, rendering, etc',
 		href: 'https://github.com/omavashia2005/dash',
 	},
 	{
 		name: "veto",
+		icon: 'rust' as IconName,
 		description: '[Blazing flast] TUI based 3D git commit graph viewer in Rust',
 		detail: 'Mainly just messing around with smart pointers (Rc<T>, Weak<T>, RefCell<T>, Box<T>) and Fable',
 		href: 'https://github.com/omavashia2005/veto',
@@ -243,22 +271,22 @@ const projects = [
 const opensource = [
 	{
 		name: 'rust-lang/rust-clippy',
-		description: '',
-		detail: '',
+		title: 'Clippy',
+		description: 'The official Rust linter',
 		href: 'https://github.com/rust-lang/rust-clippy',
 		prs: [
 			{
 				label: '#17902',
 				detail: "Add call_missing_target_feature restriction and MIR lints",
 				href: 'https://github.com/rust-lang/rust-clippy/pull/17902',
-				status: 'open' as const,
+				status: 'review' as const,
 			},
 		]
 	},
 	{
 		name: 'anomalyco/opentui',
-		description: '',
-		detail: '',
+		title: 'OpenTUI',
+		description: 'Library for building terminal UIs',
 		href: 'https://github.com/anomalyco/opentui',
 		prs: [
 			{
@@ -271,28 +299,28 @@ const opensource = [
 	},
 	{
 		name: 'cloudflare/pingora',
-		description: '',
-		detail: '',
+		title: 'Pingora',
+		description: "Cloudflare's Rust framework for fast network services",
 		href: 'https://github.com/cloudflare/pingora',
 		prs: [
 			{
 				label: '#926',
 				detail: 'Finished a TODO in pingora-header-serde to check file paths and avoid panics on unwrap',
 				href: 'https://github.com/cloudflare/pingora/pull/926',
-				status: 'open' as const,
+				status: 'review' as const,
 			},
 			{
 				label: '#928',
 				detail: 'Made the pingora-core rustls listener return a Result instead of panicking',
 				href: 'https://github.com/cloudflare/pingora/pull/928',
-				status: 'open' as const,
+				status: 'review' as const,
 			},
 		],
 	},
 	{
 		name: 'apache/texera',
-		description: '',
-		detail: '',
+		title: 'Apache Texera',
+		description: 'Human-AI collaborative data science with visual workflows',
 		href: 'https://github.com/apache/texera',
 		prs: [
 			{
@@ -305,8 +333,8 @@ const opensource = [
 	},
 	{
 		name: 'imkerberos/nvim-gpui',
-		description: '',
-		detail: '',
+		title: 'nvim-gpui',
+		description: 'GPU-rendered Neovim frontend',
 		href: 'https://github.com/imkerberos/nvim-gpui',
 		prs: [
 			{
@@ -319,8 +347,8 @@ const opensource = [
 	},
 	{
 		name: 'xiaobiaodu/3DRealCar_Toolkit',
-		description: '',
-		detail: '',
+		title: '3DRealCar',
+		description: 'ICCV 2025 in-the-wild RGB-D car dataset',
 		href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit',
 		prs: [
 			{
@@ -333,8 +361,8 @@ const opensource = [
 	},
 	{
 		name: 'langgenius/dify',
-		description: '',
-		detail: '',
+		title: 'Dify',
+		description: 'Platform for agentic workflows and RAG pipelines',
 		href: 'https://github.com/langgenius/dify',
 		prs: [
 			{
@@ -347,8 +375,28 @@ const opensource = [
 	},
 ];
 
+type PrStatus = 'merged' | 'review' | 'open';
+
+const ossPrs = opensource.flatMap((repo): { status: PrStatus }[] => repo.prs);
+
+const statusLabel: Record<PrStatus, string> = { merged: 'Merged', review: 'In review', open: 'Open' };
+
+// icon by org, then repo
+const ossIcon: Record<string, IconName> = {
+	'rust-lang': 'rust',
+	cloudflare: 'cloudflare',
+	apache: 'apache',
+	'nvim-gpui': 'neovim',
+	anomalyco: 'anomalyco',
+};
+
+function RepoIcon({ name }: { name: string }) {
+	const [org, repo] = name.split('/');
+	return <Icon name={ossIcon[org] ?? ossIcon[repo] ?? 'repo'} className="self-center" />;
+}
+
 type Tab = 'about' | 'experience' | 'projects' | 'oss' | 'videos' | 'reading';
-const tabs: Tab[] = ['about', 'projects', 'experience', 'videos', 'oss', 'reading'];
+const tabs: Tab[] = ['about', 'projects', 'oss', 'experience', 'videos', 'reading'];
 
 const tabId = (tab: Tab) => tab.replace(' ', '-');
 
@@ -379,27 +427,27 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 								aria-controls={`panel-${tabId(tab)}`}
 								onClick={() => setActive(tab)}
 								className={[
-									'shrink-0 whitespace-nowrap font-mono text-[0.63rem] md:text-[0.69rem] tracking-[0.22em] uppercase transition-colors duration-200 leading-none',
+									'shrink-0 whitespace-nowrap font-body text-[0.78rem] md:text-[0.84rem] tracking-[0.02em] transition-colors duration-200 leading-none',
 									active === tab
-										? 'text-[#f0efe9]'
-										: 'text-[#666] hover:text-[#f0efe9]/50',
+										? 'text-(--c-fg)'
+										: 'text-(--c-666) hover:text-(--c-fg)/50',
 								].join(' ')}
 							>
-								{tab}
+								{tab === 'about' ? 'home' : tab}
 								<span
 									aria-hidden="true"
 									className={[
 										'block h-px w-full mt-[5px] transition-colors duration-200',
-										active === tab ? 'bg-[#f0efe9]/30' : 'bg-transparent',
+										active === tab ? 'bg-(--c-fg)/30' : 'bg-transparent',
 									].join(' ')}
 								/>
 							</button>
-							{tab === 'about' && (
+							{tab === 'experience' && (
 								<Link
 									href="/blog"
-									className="shrink-0 font-mono text-[0.63rem] md:text-[0.69rem] tracking-[0.22em] uppercase transition-colors duration-200 leading-none text-[#666] hover:text-[#f0efe9]/50"
+									className="shrink-0 font-body text-[0.78rem] md:text-[0.84rem] tracking-[0.02em] transition-colors duration-200 leading-none text-(--c-666) hover:text-(--c-fg)/50"
 								>
-									Writing
+									writing
 									<span aria-hidden="true" className="block h-px w-full mt-[5px] bg-transparent" />
 								</Link>
 							)}
@@ -420,14 +468,14 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 						aria-labelledby="tab-about"
 						aria-hidden={active !== 'about'}
 						data-active={active === 'about'}
-						className="tab-panel flex flex-col font-mono text-[0.85rem] md:text-[0.94rem] text-[#aaa] tracking-[0.03em] leading-[1.85]"
+						className="tab-panel flex flex-col font-body text-[0.85rem] md:text-[0.94rem] text-(--c-aaa) tracking-[0.01em] leading-[1.85]"
 					>
-						<div className="flex w-full flex-col gap-5 text-pretty">
+						<div className="flex w-full flex-col gap-5">
 							<p>
 								{"Hey! I'm Om. I love building stuff mainly in Python, Go, Rust, and TypeScript. Check out the projects and OSS tabs for some stuff that did manage to make it outside the private repos :)."}
 							</p>
 							<p>
-								{"I am also currently working on a super interesting research project (more details soon!) for self‑driving cars."}
+								In the past, I have interned at <span className="whitespace-nowrap"><a href="https://www.wellsfargo.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>Wells Fargo</a><Icon name="wellsfargo" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> and <span className="whitespace-nowrap"><a href="https://ipauthor.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>IPAuthor</a><Icon name="ipauthor" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" />,</span> and for the past year have been working on a cool research project with <span className="whitespace-nowrap"><a href="https://faculty.engineering.asu.edu/yezhouyang/" target="_blank" rel="noopener noreferrer" className={aboutLink}>ASU APG</a> &amp; <a href="https://amrd.toyota.com/division/trina/" target="_blank" rel="noopener noreferrer" className={aboutLink}>TRINA</a><Icon name="asu" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /><Icon name="trina" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> building in the self-driving vehicle space.
 							</p>
 							<p>
 								{"HMU on X if anything around here looks interesting / wanna build together / anything else!"}
@@ -447,27 +495,28 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 						className="tab-panel"
 					>
 						<ul className="flex flex-col gap-7">
-							{experience.map(({ company, role, location, date, description, ...rest }) => {
+							{experience.map(({ company, icon, role, location, date, description, ...rest }) => {
 								const link = 'link' in rest ? (rest as { link: string }).link : undefined;
 								return (
 									<li key={company} className="group flex flex-col gap-[3px]">
 										<div className="flex items-baseline justify-between gap-4">
-											<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white transition-colors duration-200">
+											<span className="flex items-start gap-2 font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
+												<Icon name={icon} className="mt-[5px]" />
 												{company}
 											</span>
-											<span className="font-mono text-[0.55rem] text-[#666] tracking-[0.06em] shrink-0">
+											<span className="font-body text-[0.55rem] text-(--c-666) tracking-[0.02em] shrink-0">
 												{date}
 											</span>
 										</div>
 										<div className="flex items-baseline justify-between gap-4">
-											<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">
+											<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
 												{role}
 											</span>
-											<span className="font-mono text-[0.55rem] text-[#666] tracking-[0.06em] shrink-0">
+											<span className="font-body text-[0.55rem] text-(--c-666) tracking-[0.02em] shrink-0">
 												{location}
 											</span>
 										</div>
-										<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em] mt-[1px]">
+										<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
 											{highlightNumbers(description)}
 											{link && (
 												<>
@@ -476,7 +525,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 														href={link}
 														target="_blank"
 														rel="noopener noreferrer"
-														className="hover:text-[#f0efe9]/50 transition-colors duration-200 underline underline-offset-2 decoration-[#f0efe9]/15"
+														className="hover:text-(--c-fg)/50 transition-colors duration-200 underline underline-offset-2 decoration-(--c-fg)/15"
 													>
 														ipauthor.com
 													</a>
@@ -499,7 +548,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 						className="tab-panel"
 					>
 						<ul className="flex flex-col gap-7">
-							{projects.map(({ name, description, detail, href }) => (
+							{projects.map(({ name, icon, description, detail, href }) => (
 								<li key={name} className="group">
 									<a
 										href={href}
@@ -507,16 +556,17 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 										rel="noopener noreferrer"
 										className="flex flex-col gap-[3px]"
 									>
-										<div className="flex items-baseline justify-between gap-4">
-											<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
+										<div className="flex items-center gap-2">
+											<Icon name={icon} />
+											<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
 												{name}
 											</span>
 										</div>
-										<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">
+										<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
 											{highlightNumbers(description)}
 										</span>
 										<div className="flex items-baseline justify-between gap-4 mt-[1px]">
-											<span className="font-mono text-[0.67rem] text-[#666] tracking-[0.06em]">
+											<span className="font-body text-[0.67rem] text-(--c-666) tracking-[0.02em]">
 												{highlightNumbers(detail)}
 											</span>
 										</div>
@@ -540,15 +590,18 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 								.filter((category) => readingList.some((r) => r.category === category))
 								.map((category) => (
 									<div key={category}>
-										<h3 className="mb-4 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#555]">
+										<h3 className="mb-6 flex items-center gap-[10px] font-body text-[0.68rem] md:text-[0.72rem] uppercase tracking-[0.22em] text-(--c-aaa)">
+											<Icon name={categoryIcon[category].name} color={categoryIcon[category].color} size={14} />
 											{category}
 										</h3>
 										<ul className="flex flex-col gap-7">
-											{readingList.filter((r) => r.category === category).map(({ title, author, note, href, series }) => (
-												<li key={title} className="flex flex-col gap-[3px]">
+											{readingList.filter((r) => r.category === category).map(({ title, author, note, href, series, ...rest }) => (
+												<li key={title} className="flex items-start gap-3">
+													<Icon name={('icon' in rest && rest.icon) || 'book'} className="mt-[6px]" />
+													<div className="flex min-w-0 flex-col gap-[3px]">
 													{series ? (
 														<div className="flex flex-col gap-[3px]">
-															<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
+															<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg)">
 																{series.map((s, i) => (
 																	<Fragment key={s.href}>
 																		{i > 0 && ' + '}
@@ -556,14 +609,14 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 																			href={s.href}
 																			target="_blank"
 																			rel="noopener noreferrer"
-																			className="underline underline-offset-4 decoration-[#f0efe9]/10 hover:text-white hover:decoration-[#f0efe9]/60 transition-colors duration-200"
+																			className="underline underline-offset-4 decoration-(--c-fg)/10 hover:text-(--c-strong) hover:decoration-(--c-fg)/60 transition-colors duration-200"
 																		>
 																			{s.label}
 																		</a>
 																	</Fragment>
 																))}
 															</span>
-															<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em] mt-[1px]">
+															<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
 																{author}
 															</span>
 														</div>
@@ -574,18 +627,19 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 															rel="noopener noreferrer"
 															className="group flex flex-col gap-[3px]"
 														>
-															<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
+															<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
 																{title}
 															</span>
-															<span className="font-mono text-[0.67rem] md:text-[0.72rem] text-[#666] tracking-[0.06em] mt-[1px]">
+															<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
 																{author}
 															</span>
 														</a>
 													)}
-													<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">
-														{note}
-													</span>
-												</li>
+														<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
+															{note}
+														</span>
+														</div>
+													</li>
 											))}
 										</ul>
 									</div>
@@ -602,63 +656,55 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 						data-active={active === 'oss'}
 						className="tab-panel"
 					>
+						<p className="mb-10 font-body text-[0.75rem] md:text-[0.82rem] text-(--c-a0a0a0) tracking-[0.01em]">
+							<span className="text-(--c-fg)">{ossPrs.length}</span> PRs across{' '}
+							<span className="text-(--c-fg)">{opensource.length}</span> repos,{' '}
+							<span className="text-(--c-green)">{ossPrs.filter((pr) => pr.status === 'merged').length}</span> merged
+						</p>
 						<div className="flex flex-col gap-10">
-							{['merged', 'open'].map((status) => {
-								const filteredOss = opensource.filter(item =>
-									item.prs?.some((pr) => (pr as any).status === status)
-								);
-								if (filteredOss.length === 0) return null;
+							{(['merged', 'review', 'open'] as const).map((status) => {
+								const repos = opensource
+									.map((repo) => ({ ...repo, prs: repo.prs.filter((pr) => pr.status === status) }))
+									.filter((repo) => repo.prs.length > 0);
+								if (repos.length === 0) return null;
 								return (
 									<div key={status}>
-										<h3 className="mb-6 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#555]">
-											{status === 'merged' ? 'Merged' : 'Open'}
+										<h3 className="mb-6 flex items-center gap-[10px] font-body text-[0.68rem] md:text-[0.72rem] uppercase tracking-[0.22em] text-(--c-aaa)">
+											<Icon name={status} size={14} />
+											{statusLabel[status]}
+											<span className="text-(--c-666)">{repos.reduce((n, r) => n + r.prs.length, 0)}</span>
 										</h3>
 										<ul className="flex flex-col gap-7">
-											{filteredOss.map(({ name, description, detail, href, prs }) => {
-												const filteredPrs = prs?.filter((pr) => (pr as any).status === status) || [];
-												const isSinglePr = filteredPrs.length === 1;
-
-												return (
+											{repos.map(({ name, title, description, href, prs }) => (
 													<li key={name}>
-														{isSinglePr ? (
-															<a href={filteredPrs[0].href} target="_blank" rel="noopener noreferrer" className="group block">
-																<span className="block font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9] group-hover:text-white transition-colors duration-200">{name}</span>
-																<span className="mt-2 flex items-baseline gap-2">
-																	<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">{filteredPrs[0].label}</span>
-																	<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">{filteredPrs[0].detail}</span>
+														<a href={href} target="_blank" rel="noopener noreferrer" className="group flex flex-col gap-[3px]">
+															<span className="flex flex-wrap items-center gap-2">
+																<RepoIcon name={name} />
+																<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
+																	{title}
 																</span>
-															</a>
-														) : (
-															<>
-																<span className="font-cormorant text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-[#f0efe9]">
-																	{name}
-																</span>
-																{filteredPrs.length > 0 && (
-																	<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-[#f0efe9]/[0.08]">
-																		{filteredPrs.map((pr) => (
-																			<li key={pr.href}>
-																				<a
-																					href={pr.href}
-																					target="_blank"
-																					rel="noopener noreferrer"
-																					className="group flex items-baseline gap-2"
-																				>
-																					<span className="font-cormorant text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-[#f0efe9] group-hover:text-white underline underline-offset-4 decoration-[#f0efe9]/10 group-hover:decoration-[#f0efe9]/60 transition-colors duration-200">
-																						{pr.label}
-																					</span>
-																					<span className="font-mono text-[0.71rem] md:text-[0.78rem] text-[#888] tracking-[0.04em]">
-																						{pr.detail}
-																					</span>
-																				</a>
-																			</li>
-																		))}
-																	</ul>
-																)}
-															</>
-														)}
+															</span>
+															<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em]">
+																{description}
+															</span>
+														</a>
+														<ul className="mt-3 flex flex-col gap-3 pl-5 border-l border-(--c-fg)/[0.08]">
+															{prs.map((pr) => (
+																<li key={pr.href}>
+																	<a href={pr.href} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-2">
+																	<Icon name={status} size={11} className="relative top-[1px]" />
+																		<span className="font-display text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
+																			{pr.label}
+																		</span>
+																		<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) group-hover:text-(--c-bbb) tracking-[0.01em] transition-colors duration-200">
+																			{pr.detail}
+																		</span>
+																	</a>
+																</li>
+															))}
+														</ul>
 													</li>
-												);
-											})}
+											))}
 										</ul>
 									</div>
 								);
@@ -684,27 +730,28 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 									rel="noopener noreferrer"
 									className="group block"
 								>
-									<div className="relative aspect-video overflow-hidden border border-[#f0efe9]/[0.08] bg-[#111]">
+									<div className="relative aspect-video overflow-hidden border border-(--c-fg)/[0.08] bg-(--c-bg-2)">
 										<img
 											src={`https://i.ytimg.com/vi/${v.id}/${v.thumb}.jpg`}
 											alt={`Thumbnail for ${v.title}`}
 											className="h-full w-full object-cover opacity-80 transition duration-200 group-hover:scale-[1.02] group-hover:opacity-100"
 										/>
 										<span className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
-											<span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#080808]/80 pl-1 text-lg text-[#f0efe9] backdrop-blur-sm">
+											<span className="flex h-12 w-12 items-center justify-center rounded-full bg-(--c-bg)/80 pl-1 text-lg text-(--c-fg) backdrop-blur-sm">
 												▶
 											</span>
 										</span>
 									</div>
 									<div className="mt-3 flex items-baseline justify-between gap-4">
-										<span className="font-cormorant text-[1.35rem] font-light leading-tight text-[#f0efe9] transition-colors duration-200 group-hover:text-white md:text-[1.5rem]">
+										<span className="font-display text-[1.35rem] font-light leading-tight text-(--c-fg) transition-colors duration-200 group-hover:text-(--c-strong) md:text-[1.5rem]">
 											{v.title}
 										</span>
-										<span className="shrink-0 font-mono text-[0.6rem] text-[#555] transition-colors duration-200 group-hover:text-[#f0efe9]/40">
+										<span className="shrink-0 font-body text-[0.6rem] text-(--c-555) transition-colors duration-200 group-hover:text-(--c-fg)/40">
 											↗
 										</span>
 									</div>
-									<span className="mt-1 block font-mono text-[0.58rem] tracking-[0.06em] text-[#666]">
+									<span className="mt-1 flex items-center gap-[6px] font-body text-[0.58rem] tracking-[0.02em] text-(--c-666)">
+										<Icon name="youtube" size={12} />
 										YouTube
 									</span>
 								</a>

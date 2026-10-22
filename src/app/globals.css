@@ -5,13 +5,100 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── Theme tokens (palette: #251d04 #4c432f #767b65 #a2ab9b #c4d4cd) ── */
+:root,
+:root[data-theme='dark'] {
+  --c-bg: #251d04;
+  --c-bg-2: #30260a;
+  --c-fg: #c4d4cd;
+  --c-strong: #e2ece7;
+  --c-bbb: #a8b8ab;
+  --c-aaa: #a2ab9b;
+  --c-a0a0a0: #a2ab9b;
+  --c-999: #929a88;
+  --c-888: #878e7b;
+  --c-777: #7e8470;
+  --c-666: #767b65;
+  --c-555: #615d4a;
+  --c-444: #4c432f;
+  --c-green: #c7d99a;
+  --c-amber: #e0b264;
+  --c-violet: #a3a9e8;
+  --c-bun: #fbf0df;
+  --hm-0: rgba(196, 212, 205, 0.07);
+  --hm-1: #4c432f;
+  --hm-2: #767b65;
+  --hm-3: #a2ab9b;
+  --hm-4: #c4d4cd;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --c-bg: #c4d4cd;
+    --c-bg-2: #b6c8c0;
+    --c-fg: #251d04;
+    --c-strong: #140f02;
+    --c-bbb: #2b2309;
+    --c-aaa: #30280e;
+    --c-a0a0a0: #362d15;
+    --c-999: #3d3520;
+    --c-888: #413926;
+    --c-777: #463e2a;
+    --c-666: #4c432f;
+    --c-555: #5e5d48;
+    --c-444: #767b65;
+    --c-green: #3f5714;
+    --c-amber: #7a4e0c;
+    --c-violet: #3a46a8;
+    --c-bun: #3b2a1a;
+    --hm-0: rgba(37, 29, 4, 0.08);
+    --hm-1: #a2ab9b;
+    --hm-2: #767b65;
+    --hm-3: #4c432f;
+    --hm-4: #251d04;
+    color-scheme: light;
+  }
+}
+
+:root[data-theme='light'] {
+  --c-bg: #c4d4cd;
+  --c-bg-2: #b6c8c0;
+  --c-fg: #251d04;
+  --c-strong: #140f02;
+  --c-bbb: #2b2309;
+  --c-aaa: #30280e;
+  --c-a0a0a0: #362d15;
+  --c-999: #3d3520;
+  --c-888: #413926;
+  --c-777: #463e2a;
+  --c-666: #4c432f;
+  --c-555: #5e5d48;
+  --c-444: #767b65;
+  --c-green: #3f5714;
+  --c-amber: #7a4e0c;
+  --c-violet: #3a46a8;
+  --c-bun: #3b2a1a;
+  --hm-0: rgba(37, 29, 4, 0.08);
+  --hm-1: #a2ab9b;
+  --hm-2: #767b65;
+  --hm-3: #4c432f;
+  --hm-4: #251d04;
+  color-scheme: light;
+}
+
 @layer base {
   html {
-    background-color: #080808;
-    color: #f0efe9;
+    background-color: var(--c-bg);
+    color: var(--c-fg);
     scroll-behavior: smooth;
     scrollbar-width: none;
     @apply font-sans;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--c-fg) 22%, transparent);
+    color: var(--c-strong);
   }
 
   html::-webkit-scrollbar {
@@ -101,41 +188,41 @@
   display: flex;
   flex-direction: column;
   gap: 1.3rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.94rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.01em;
   line-height: 1.9;
-  color: #aaa;
+  color: var(--c-aaa);
 }
 
 .blog-body h2 {
   margin-top: 1.1rem;
-  font-family: var(--font-cormorant);
+  font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0;
   line-height: 1.1;
-  color: #f0efe9;
+  color: var(--c-fg);
 }
 
 .blog-body h3 {
   margin-top: 0.6rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #f0efe9;
+  color: var(--c-fg);
 }
 
 .blog-body a {
-  color: #f0efe9;
+  color: var(--c-fg);
   text-decoration: underline;
-  text-decoration-color: rgba(240, 239, 233, 0.18);
+  text-decoration-color: color-mix(in srgb, var(--c-fg) 18%, transparent);
   text-underline-offset: 3px;
   transition: text-decoration-color 180ms ease, color 180ms ease;
 }
 
 .blog-body a:hover {
-  color: #fff;
-  text-decoration-color: rgba(240, 239, 233, 0.45);
+  color: var(--c-strong);
+  text-decoration-color: color-mix(in srgb, var(--c-fg) 45%, transparent);
 }
 
 .blog-body ul,
@@ -155,16 +242,18 @@
 }
 
 .blog-body :where(p, li) > code {
-  border: 1px solid rgba(240, 239, 233, 0.08);
-  background: rgba(240, 239, 233, 0.04);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  border: 1px solid color-mix(in srgb, var(--c-fg) 8%, transparent);
+  background: color-mix(in srgb, var(--c-fg) 4%, transparent);
   padding: 0.08rem 0.28rem;
-  color: #f0efe9;
+  color: var(--c-fg);
 }
 
 .blog-body video,
 .blog-body img {
   width: 100%;
-  border: 1px solid rgba(240, 239, 233, 0.08);
+  border: 1px solid color-mix(in srgb, var(--c-fg) 8%, transparent);
 }
 
 @media (min-width: 768px) {
@@ -186,8 +275,9 @@
 }
 
 @theme inline {
-  --font-cormorant: var(--font-cormorant-face), Georgia, serif;
+  --font-display: var(--font-display-face), sans-serif;
   --font-mono: var(--font-mono-face), monospace;
+  --font-body: var(--font-body-face), monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

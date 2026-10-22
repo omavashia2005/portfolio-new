@@ -8,7 +8,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        cormorant: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        display: ['var(--font-display)', 'sans-serif'],
         mono: ['var(--font-mono)', 'monospace'],
       },
     },

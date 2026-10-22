@@ -2,8 +2,7 @@ import Image from 'next/image';
 import GitHubContributions from './GitHubContributions';
 import TabSection from './TabSection';
 
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 // ── SVG icons ────────────────────────────────────────────────────────────────
 
@@ -49,7 +48,7 @@ function SocialLinks({ className = '' }: { className?: string }) {
           aria-label={label}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#666] hover:text-[#f0efe9] transition-colors duration-200"
+          className="text-(--c-666) hover:text-(--c-fg) transition-colors duration-200"
         >
           <Icon />
         </a>
@@ -62,7 +61,7 @@ function SocialLinks({ className = '' }: { className?: string }) {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#080808] flex flex-col items-center justify-center px-6 py-16 md:px-12 md:py-24 lg:px-20">
+    <main className="min-h-screen bg-(--c-bg) flex flex-col items-center justify-center px-6 py-16 md:px-12 md:py-24 lg:px-20">
       <TabSection
         githubContributions={<GitHubContributions />}
         mobileSocials={<SocialLinks />}
@@ -73,7 +72,7 @@ export default function Home() {
               <div className="anim anim-1 flex items-center gap-5 md:flex-col md:items-start md:gap-5 mb-8 md:mb-0">
                 <div
                   className="shrink-0 rounded-full overflow-hidden"
-                  style={{ width: 78, height: 78, outline: '1px solid rgba(240,239,233,0.08)', outlineOffset: '2px' }}
+                  style={{ width: 78, height: 78, outline: '1px solid color-mix(in srgb, var(--c-fg) 8%, transparent)', outlineOffset: '2px' }}
                 >
                   <Image
                     src="/profile.jpg"
@@ -84,14 +83,9 @@ export default function Home() {
                     className="object-cover w-full h-full"
                   />
                 </div>
-                <div>
-                  <h1 className="font-cormorant text-[2.45rem] md:text-[2.8rem] lg:text-[3rem] font-light leading-none tracking-[-0.01em] text-[#f0efe9]">
-                    Om Avashia
-                  </h1>
-                  <p className="font-mono text-[0.65rem] md:text-[0.68rem] tracking-[0.16em] text-[#777] mt-[8px] uppercase leading-relaxed">
-                    SWE&nbsp;·&nbsp;CV RESEARCH&nbsp;·&nbsp;CS @ ASU
-                  </p>
-                </div>
+                <h1 className="font-display text-[2.45rem] md:text-[2.8rem] lg:text-[3rem] font-light leading-none tracking-[-0.01em] text-(--c-fg)">
+                  Om Avashia
+                </h1>
               </div>
 
               {/* Socials + Languages — tucked below name on desktop */}

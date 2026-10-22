@@ -1,16 +1,32 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, IBM_Plex_Mono } from 'next/font/google';
+import { Fragment_Mono, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
+import ThemeToggle from './ThemeToggle';
 
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  style: ['normal', 'italic'],
-  variable: '--font-cormorant-face',
+// Swansea by Roger White, free for personal use (see fonts/swansea/SWANSE__.TXT); served as the original TTFs since the license forbids format conversion
+const display = localFont({
+  src: [
+    { path: './fonts/swansea/SWANSE__.ttf', weight: '400', style: 'normal' },
+    { path: './fonts/swansea/SWANSE_I.ttf', weight: '400', style: 'italic' },
+    { path: './fonts/swansea/SWANSE_B.ttf', weight: '700', style: 'normal' },
+    { path: './fonts/swansea/SWANSEBI.ttf', weight: '700', style: 'italic' },
+  ],
+  variable: '--font-display-face',
   display: 'swap',
 });
 
-const mono = IBM_Plex_Mono({
+// secondary text
+const body = Fragment_Mono({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-body-face',
+  display: 'swap',
+});
+
+// code blocks
+const mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['300', '400', '500'],
   variable: '--font-mono-face',
@@ -33,8 +49,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${mono.variable} dark`}>
-      <body className="bg-[#080808] text-[#f0efe9]">{children}</body>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable} dark`} suppressHydrationWarning>
+      <head>
+        {/* apply saved theme before paint so there's no flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}",
+          }}
+        />
+      </head>
+      <body className="bg-(--c-bg) text-(--c-fg)">
+        <ThemeToggle />
+        {children}
+      </body>
     </html>
   );
 }

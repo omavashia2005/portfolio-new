@@ -42,31 +42,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[#080808] px-6 py-14 md:px-12 md:py-20">
+    <main className="min-h-screen bg-(--c-bg) px-6 py-14 md:px-12 md:py-20">
       <article className="mx-auto w-full max-w-[720px]">
-        <nav className="anim anim-1 flex items-center gap-4 font-mono text-[0.67rem] uppercase tracking-[0.2em] text-[#666]">
-          <Link
-            href="/blog"
-            className="transition-colors duration-200 hover:text-[#f0efe9]/70"
-          >
-            ← Writing
+        <nav className="anim anim-1 flex items-center gap-2 font-body text-[0.75rem] tracking-[0.02em] text-(--c-666)">
+          <Link href="/" className="transition-colors duration-200 hover:text-(--c-fg)">
+            home
           </Link>
-          <Link
-            href="/"
-            className="transition-colors duration-200 hover:text-[#f0efe9]/70"
-          >
-            Home
+          <span aria-hidden="true" className="text-(--c-444)">/</span>
+          <Link href="/blog" className="transition-colors duration-200 hover:text-(--c-fg)">
+            writing
           </Link>
         </nav>
 
-        <header className="anim anim-2 mt-12 border-b border-[#f0efe9]/[0.07] pb-8">
-          <div className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[#666]">
+        <header className="anim anim-2 mt-12 border-b border-(--c-fg)/[0.07] pb-8">
+          <div className="font-body text-[0.55rem] uppercase tracking-[0.14em] text-(--c-666)">
             <time dateTime={post.date}>{post.displayDate}</time>
           </div>
-          <h1 className="mt-5 text-balance font-cormorant text-[3rem] font-light leading-[0.95] text-[#f0efe9] md:text-[4.25rem]">
+          <h1 className="mt-5 text-balance font-display text-[3rem] font-light leading-[0.95] text-(--c-fg) md:text-[4.25rem]">
             {post.title}
           </h1>
-          <p className="mt-5 max-w-prose text-pretty font-mono text-[0.87rem] leading-[1.8] tracking-[0.03em] text-[#888] md:text-[0.99rem]">
+          <p className="mt-5 max-w-prose text-pretty font-body text-[0.87rem] leading-[1.8] tracking-[0.01em] text-(--c-888) md:text-[0.99rem]">
             {post.description}
           </p>
         </header>

@@ -1,7 +1,3 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
 type ContributionLevel =
   | 'NONE'
   | 'FIRST_QUARTILE'
@@ -39,11 +35,11 @@ type PublicContributionResponse = {
 const username = 'omavashia2005';
 
 const contributionColors: Record<ContributionLevel, string> = {
-  NONE: 'rgba(240, 239, 233, 0.055)',
-  FIRST_QUARTILE: '#163820',
-  SECOND_QUARTILE: '#236336',
-  THIRD_QUARTILE: '#348c4d',
-  FOURTH_QUARTILE: '#58c772',
+  NONE: 'var(--hm-0)',
+  FIRST_QUARTILE: 'var(--hm-1)',
+  SECOND_QUARTILE: 'var(--hm-2)',
+  THIRD_QUARTILE: 'var(--hm-3)',
+  FOURTH_QUARTILE: 'var(--hm-4)',
 };
 
 const weekdays = [0, 1, 2, 3, 4, 5, 6];
@@ -56,7 +52,8 @@ async function getPublicCalendar(): Promise<ContributionCalendar | null> {
         headers: {
           Accept: 'application/json',
         },
-        cache: 'no-store',
+        // ponytail: hourly refresh; lower revalidate if you want it fresher
+        next: { revalidate: 3600 },
       },
     );
 
@@ -134,22 +131,8 @@ function formatDate(date: string) {
   }).format(new Date(`${date}T00:00:00.000Z`));
 }
 
-export default function GitHubContributions() {
-  const [calendar, setCalendar] = useState<ContributionCalendar | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    getPublicCalendar().then((result) => {
-      if (!cancelled) {
-        setCalendar(result);
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+export default async function GitHubContributions() {
+  const calendar = await getPublicCalendar();
 
   if (!calendar) {
     return null;
@@ -163,7 +146,7 @@ export default function GitHubContributions() {
       <div className="mb-4 flex items-baseline justify-between gap-4">
         <h2
           id="github-contributions-title"
-          className="font-mono text-[0.6rem] tracking-[0.24em] text-[#777] uppercase"
+          className="font-body text-[0.6rem] tracking-[0.24em] text-(--c-777) uppercase"
         >
           GitHub
         </h2>
@@ -171,7 +154,7 @@ export default function GitHubContributions() {
           href={`https://github.com/${username}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-mono text-[0.58rem] tracking-[0.08em] text-[#666] transition-colors duration-200 hover:text-[#f0efe9]/60"
+          className="font-body text-[0.58rem] tracking-[0.03em] text-(--c-666) transition-colors duration-200 hover:text-(--c-fg)/60"
         >
           {calendar.totalContributions.toLocaleString()} contributions
         </a>
