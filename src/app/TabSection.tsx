@@ -8,12 +8,12 @@ import { Icon, type IconName } from './icons';
 
 const experience = [
 	{
-		company: 'ASU Active Perception Group + Toyota Research Institute (TRINA)',
+		company: 'ASU Active Perception Group &\nToyota Research Institute (TRINA)',
 		icon: 'trina' as IconName,
 		role: 'Computer Vision Researcher',
 		location: 'Tempe, AZ',
 		date: 'Nov 2025 – Present',
-		description: '3D Gaussian Reconstruction + NVS for Autonomous Vehicles',
+		description: '3D Gaussian Reconstruction & NVS for Autonomous Vehicles',
 	},
 	{
 		company: 'Wells Fargo',
@@ -499,20 +499,20 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 								const link = 'link' in rest ? (rest as { link: string }).link : undefined;
 								return (
 									<li key={company} className="group flex flex-col gap-[3px]">
-										<div className="flex items-baseline justify-between gap-4">
-											<span className="flex items-start gap-2 font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
-												<Icon name={icon} className="mt-[5px]" />
-												{company}
+										<div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-4">
+											<span className="flex items-start gap-2 font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
+												<Icon name={icon} size={16} className="mt-[3px]" />
+												<span className="whitespace-pre-line md:whitespace-normal">{company}</span>
 											</span>
-											<span className="font-body text-[0.55rem] text-(--c-666) tracking-[0.02em] shrink-0">
+											<span className="font-body text-[0.62rem] text-(--c-666) tracking-[0.02em] md:shrink-0">
 												{date}
 											</span>
 										</div>
-										<div className="flex items-baseline justify-between gap-4">
+										<div className="flex flex-col md:flex-row md:items-baseline md:justify-between md:gap-4">
 											<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
 												{role}
 											</span>
-											<span className="font-body text-[0.55rem] text-(--c-666) tracking-[0.02em] shrink-0">
+											<span className="font-body text-[0.62rem] text-(--c-666) tracking-[0.02em] md:shrink-0">
 												{location}
 											</span>
 										</div>
@@ -558,7 +558,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 									>
 										<div className="flex items-center gap-2">
 											<Icon name={icon} />
-											<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
+											<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
 												{name}
 											</span>
 										</div>
@@ -601,7 +601,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 													<div className="flex min-w-0 flex-col gap-[3px]">
 													{series ? (
 														<div className="flex flex-col gap-[3px]">
-															<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg)">
+															<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg)">
 																{series.map((s, i) => (
 																	<Fragment key={s.href}>
 																		{i > 0 && ' + '}
@@ -627,7 +627,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 															rel="noopener noreferrer"
 															className="group flex flex-col gap-[3px]"
 														>
-															<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
+															<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
 																{title}
 															</span>
 															<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
@@ -680,7 +680,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 														<a href={href} target="_blank" rel="noopener noreferrer" className="group flex flex-col gap-[3px]">
 															<span className="flex flex-wrap items-center gap-2">
 																<RepoIcon name={name} />
-																<span className="font-display text-[1.35rem] md:text-[1.5rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
+																<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
 																	{title}
 																</span>
 															</span>
@@ -693,7 +693,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 																<li key={pr.href}>
 																	<a href={pr.href} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-2">
 																	<Icon name={status} size={11} className="relative top-[1px]" />
-																		<span className="font-display text-[1.15rem] md:text-[1.25rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
+																		<span className="shrink-0 font-body text-[0.71rem] md:text-[0.78rem] tracking-[0.01em] text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
 																			{pr.label}
 																		</span>
 																		<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) group-hover:text-(--c-bbb) tracking-[0.01em] transition-colors duration-200">
@@ -743,11 +743,8 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 										</span>
 									</div>
 									<div className="mt-3 flex items-baseline justify-between gap-4">
-										<span className="font-display text-[1.35rem] font-light leading-tight text-(--c-fg) transition-colors duration-200 group-hover:text-(--c-strong) md:text-[1.5rem]">
+										<span className="font-display text-[1.15rem] font-light leading-tight text-(--c-fg) transition-colors duration-200 group-hover:text-(--c-strong) md:text-[1.3rem]">
 											{v.title}
-										</span>
-										<span className="shrink-0 font-body text-[0.6rem] text-(--c-555) transition-colors duration-200 group-hover:text-(--c-fg)/40">
-											↗
 										</span>
 									</div>
 									<span className="mt-1 flex items-center gap-[6px] font-body text-[0.58rem] tracking-[0.02em] text-(--c-666)">

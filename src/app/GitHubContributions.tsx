@@ -161,15 +161,15 @@ export default async function GitHubContributions() {
       </div>
 
       <div
-        className="grid gap-[2px]"
-        style={{ gridTemplateColumns: `repeat(${calendar.weeks.length}, minmax(0, 1fr))` }}
+        className="grid grid-flow-col auto-cols-fr gap-[2px]"
         role="img"
         aria-label={`${calendar.totalContributions.toLocaleString()} GitHub contributions in the last year`}
       >
         {calendar.weeks.map((week, weekIndex) => (
           <div
             key={`${weekIndex}-${week.contributionDays[0]?.date ?? 'empty'}`}
-            className="grid gap-[2px]"
+            // last ~6 months on phones so the cells stay a readable size
+            className={`grid gap-[2px] ${weekIndex < calendar.weeks.length - 26 ? 'hidden md:grid' : ''}`}
             style={{ gridTemplateRows: 'repeat(7, minmax(0, 1fr))' }}
           >
             {weekdays.map((weekday) => {

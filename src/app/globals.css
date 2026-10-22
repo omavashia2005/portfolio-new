@@ -167,6 +167,11 @@
     visibility 0s linear 180ms;
 }
 
+.tab-panel:not([data-active='true']) {
+  height: 0;
+  overflow: hidden;
+}
+
 .tab-panel[data-active='true'] {
   opacity: 1;
   pointer-events: auto;

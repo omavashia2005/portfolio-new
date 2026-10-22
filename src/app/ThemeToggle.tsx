@@ -34,7 +34,7 @@ export default function ThemeToggle() {
 			type="button"
 			onClick={toggle}
 			aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-			className="fixed right-4 top-4 z-50 p-2 text-(--c-666) transition-colors duration-200 hover:text-(--c-fg) md:right-6 md:top-6"
+			className="absolute right-4 top-4 z-50 p-2 text-(--c-666) transition-colors duration-200 hover:text-(--c-fg) md:right-6 md:top-6"
 		>
 			<svg aria-hidden="true" viewBox="0 0 16 16" width="15" height="15" fill="currentColor" className={theme ? '' : 'invisible'}>
 				<path d={theme === 'light' ? moon : sun} />
