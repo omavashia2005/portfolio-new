@@ -1,16 +1,13 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { Fragment_Mono, JetBrains_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
 import ThemeToggle from './ThemeToggle';
 
-// Swansea by Roger White, free for personal use (see fonts/swansea/SWANSE__.TXT); served as the original TTFs since the license forbids format conversion
+// Swansea by Roger White, free for personal use (see fonts/swansea/SWANSE__.TXT); served as the original TTF since the license forbids format conversion; only regular is used (the bold italic file also fails Chrome's font sanitizer)
 const display = localFont({
   src: [
     { path: './fonts/swansea/SWANSE__.ttf', weight: '400', style: 'normal' },
-    { path: './fonts/swansea/SWANSE_I.ttf', weight: '400', style: 'italic' },
-    { path: './fonts/swansea/SWANSE_B.ttf', weight: '700', style: 'normal' },
-    { path: './fonts/swansea/SWANSEBI.ttf', weight: '700', style: 'italic' },
   ],
   variable: '--font-display-face',
   display: 'swap',
@@ -32,9 +29,6 @@ const mono = JetBrains_Mono({
   variable: '--font-mono-face',
   display: 'swap',
 });
-
-// lets the phone tab bar pad for the home indicator via env(safe-area-inset-bottom)
-export const viewport: Viewport = { viewportFit: 'cover' };
 
 export const metadata: Metadata = {
   title: 'Om Avashia',

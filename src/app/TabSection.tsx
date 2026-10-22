@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Fragment, useEffect, useState, type ReactNode } from 'react';
+import { Fragment, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from './icons';
+import { isTab, tabs, type Tab } from './tabs';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -393,8 +394,6 @@ function RepoIcon({ name }: { name: string }) {
 	return <Icon name={ossIcon[org] ?? ossIcon[repo] ?? 'repo'} className="self-center" />;
 }
 
-type Tab = 'about' | 'experience' | 'projects' | 'oss' | 'videos' | 'reading';
-const tabs: Tab[] = ['about', 'projects', 'oss', 'experience', 'videos', 'reading'];
 
 const tabLabel: Record<Tab, string> = { about: 'home', projects: 'projects', oss: 'open source', experience: 'experience', videos: 'videos', reading: 'reading' };
 
@@ -403,35 +402,26 @@ const tabId = (tab: Tab) => tab.replace(' ', '-');
 // ── Component ─────────────────────────────────────────────────────────────────
 
 type TabSectionProps = {
+	initialTab?: string;
 	githubContributions?: ReactNode;
 	mobileSocials?: ReactNode;
 	identity?: ReactNode;
 };
 
-export default function TabSection({ githubContributions, mobileSocials, identity }: TabSectionProps) {
-	const [active, setActive] = useState<Tab>('about');
-
-	// restore the last tab this session (e.g. coming back from /blog)
-	useEffect(() => {
-		try {
-			const saved = sessionStorage.getItem('tab') as Tab | null;
-			if (saved && tabs.includes(saved)) setActive(saved);
-		} catch {}
-	}, []);
+export default function TabSection({ initialTab, githubContributions, mobileSocials, identity }: TabSectionProps) {
+	// the tab lives in the URL (?tab=), so the server renders the right one: refresh, back and shared links never flash home
+	const [active, setActive] = useState<Tab>(isTab(initialTab) ? initialTab : 'about');
 
 	const selectTab = (tab: Tab) => {
 		setActive(tab);
-		try {
-			sessionStorage.setItem('tab', tab);
-		} catch {}
+		window.history.replaceState(null, '', tab === 'about' ? '/' : `/?tab=${tab}`);
 	};
 
 	return (
-		<div className="anim anim-4 w-full max-w-[420px] md:max-w-[900px] lg:max-w-[980px]">
+		<div className="w-full max-w-[420px] md:max-w-[900px] lg:max-w-[980px]">
 
 			{/* ── Tab buttons ──────────────────────────────────────────────── */}
-			{/* phones: fixed to the bottom of the screen; desktop: inline above the content */}
-			<div className="tabs-scroll fixed inset-x-0 bottom-0 z-40 flex items-center gap-x-6 overflow-x-auto border-t border-(--c-fg)/[0.08] bg-(--c-bg) px-6 pr-14 pt-5 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:static md:z-auto md:mb-8 md:justify-between md:border-0 md:bg-transparent md:px-0 md:pt-0 md:pb-1">
+			<div className="tabs-scroll mb-8 flex items-center gap-x-6 overflow-x-auto pb-1 md:justify-between">
 				<div className="contents" role="tablist" aria-label="Portfolio sections">
 					{tabs.map((tab) => (
 						<Fragment key={tab}>
@@ -460,7 +450,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 							</button>
 							{tab === 'experience' && (
 								<Link
-									href="/blog"
+									href={active === 'about' ? '/blog' : `/blog?from=${active}`}
 									className="shrink-0 font-body text-[0.78rem] md:text-[0.84rem] tracking-[0.02em] transition-colors duration-200 leading-none text-(--c-666) hover:text-(--c-fg)/50"
 								>
 									writing
@@ -473,7 +463,7 @@ export default function TabSection({ githubContributions, mobileSocials, identit
 			</div>
 
 			{/* tabs stay put on top; identity column only on about, other tabs get the full width */}
-			<div className="flex flex-col md:flex-row md:gap-16 lg:gap-24 md:items-start">
+			<div className="anim anim-4 flex flex-col md:flex-row md:gap-16 lg:gap-24 md:items-start">
 				{active === 'about' && identity}
 
 				<div className="flex-1 min-w-0 grid">

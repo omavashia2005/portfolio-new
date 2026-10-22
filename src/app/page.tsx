@@ -2,7 +2,6 @@ import Image from 'next/image';
 import GitHubContributions from './GitHubContributions';
 import TabSection from './TabSection';
 
-export const revalidate = 7200;
 
 // ── SVG icons ────────────────────────────────────────────────────────────────
 
@@ -78,10 +77,12 @@ function SocialLinks({ className = '' }: { className?: string }) {
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 
-export default function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+  const { tab } = await searchParams;
   return (
-    <main className="min-h-screen bg-(--c-bg) flex flex-col items-center justify-start px-6 pt-16 pb-32 md:px-12 md:py-24 lg:px-20">
+    <main className="min-h-screen bg-(--c-bg) flex flex-col items-center justify-start px-6 py-16 md:px-12 md:py-24 lg:px-20">
       <TabSection
+        initialTab={tab}
         githubContributions={<GitHubContributions />}
         mobileSocials={<SocialLinks />}
         identity={
