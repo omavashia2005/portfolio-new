@@ -46,16 +46,15 @@ const weekdays = [0, 1, 2, 3, 4, 5, 6];
 
 async function getPublicCalendar(): Promise<ContributionCalendar | null> {
   try {
-    const response = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
-      {
-        headers: {
-          Accept: 'application/json',
-        },
-        // refreshed every 2h
-        next: { revalidate: 7200 },
+    // Cached 2h by Cloudflare's edge cache (`cf`). Next's `next: { revalidate }` crashes under
+    // next-on-pages with "Illegal invocation", taking the whole home page down with it.
+    const init: RequestInit & { cf?: { cacheTtl: number; cacheEverything: boolean } } = {
+      headers: {
+        Accept: 'application/json',
       },
-    );
+      cf: { cacheTtl: 7200, cacheEverything: true },
+    };
+    const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, init);
 
     if (!response.ok) {
       console.error('Public contribution API failed', response.status);
