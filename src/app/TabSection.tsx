@@ -388,6 +388,7 @@ const ossIcon: Record<string, IconName> = {
 	apache: 'apache',
 	'nvim-gpui': 'neovim',
 	anomalyco: 'anomalyco',
+	langgenius: 'dify',
 };
 
 function RepoIcon({ name }: { name: string }) {
@@ -482,7 +483,9 @@ export default function TabSection({ initialTab, githubContributions, mobileSoci
 					>
 						<div className="flex w-full flex-col gap-5">
 							<p>
-								{"Hey! I'm Om. I love building stuff mainly in Go, Rust, and TypeScript, and Python."}
+								{/* on phones the greeting is the page heading instead */}
+								<span className="hidden md:inline">{"Hey! I'm Om. "}</span>
+								{"I love building stuff mainly in Go, Rust, and TypeScript, and Python."}
 								{/* the tagline is hidden under the photo on phones, so fold it in here */}
 								<span className="md:hidden">
 									{" I'm interested in various parts of the stack and different domains (distributed systems, low level programming, ML/AI, product, and design). Currently CS Senior at ASU"}

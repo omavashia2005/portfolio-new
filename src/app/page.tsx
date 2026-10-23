@@ -92,7 +92,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
             <div className="md:w-[250px] lg:w-[280px] md:shrink-0 flex flex-col">
 
               {/* Hero */}
-              <div className="flex items-center gap-5 md:flex-col md:items-start md:gap-5 mb-8 md:mb-0">
+              {/* phones: "Hey! I'm Om." with the photo on the right; desktop: photo above the name */}
+              <div className="flex flex-row-reverse items-center justify-between gap-5 md:flex-col md:items-start md:justify-start md:gap-5 mb-8 md:mb-0">
                 <div
                   className="shrink-0 rounded-full overflow-hidden"
                   style={{ width: 78, height: 78, outline: '1px solid color-mix(in srgb, var(--c-fg) 8%, transparent)', outlineOffset: '2px' }}
@@ -107,7 +108,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
                   />
                 </div>
                 <h1 className="font-display text-[2.45rem] md:text-[2.8rem] lg:text-[3rem] font-light leading-none tracking-[-0.01em] text-(--c-fg)">
-                  Om Avashia
+                  <span className="md:hidden">Hey! I&apos;m Om.</span>
+                  <span className="hidden md:inline">Om Avashia</span>
                 </h1>
               </div>
 
