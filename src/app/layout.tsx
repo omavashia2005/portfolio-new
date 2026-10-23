@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Fragment_Mono, JetBrains_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
@@ -30,6 +30,14 @@ const mono = JetBrains_Mono({
   display: 'swap',
 });
 
+// tints Safari's status bar / overscroll chrome to the page colour (matches --c-bg in globals.css)
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#c4d4cd' },
+    { media: '(prefers-color-scheme: dark)', color: '#251d04' },
+  ],
+};
+
 export const metadata: Metadata = {
   title: 'Om Avashia',
   description: 'CS @ ASU · Full Stack · Open Source',
@@ -55,7 +63,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-(--c-bg) text-(--c-fg)">
+      <body className="text-(--c-fg)">
         <ThemeToggle />
         {children}
       </body>

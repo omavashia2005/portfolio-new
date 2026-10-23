@@ -16,7 +16,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
   const posts = getBlogPosts();
 
   return (
-    <main className="min-h-screen bg-(--c-bg) px-6 py-14 md:px-12 md:py-20">
+    <main className="min-h-screen px-6 py-14 md:px-12 md:py-20">
       <div className="mx-auto w-full max-w-[720px]">
         <nav className="anim anim-1 flex items-center gap-2 font-body text-[0.75rem] tracking-[0.02em] text-(--c-666)">
           <Link href={isTab(from) && from !== 'about' ? `/?tab=${from}` : '/'} className="transition-colors duration-200 hover:text-(--c-fg)">
