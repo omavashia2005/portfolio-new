@@ -213,6 +213,13 @@ const videos = [
 
 const projects = [
 	{
+		name: '.sct',
+		icon: 'typescript' as IconName,
+		description: 'Never commit your secrets again with .sct, a MacOS Keychain-backed vault for all your environment variables. Securely share encrypted secrets with teammates via an relay server',
+		detail: 'Ditch .env files forever and build with .sct. Use our lightweight SDK to inject secrets at runtime, drop in replacement for .env files, 100% securely agent accessible via MCP, CLI, and skills. Built for CalHacks 13.0',
+		href: 'https://github.com/omavashia2005/.sct',
+	},
+	{
 		name: 'emberdb',
 		icon: 'go' as IconName,
 		description: 'Blazing fast distributed Redis-compatible key-value store',
