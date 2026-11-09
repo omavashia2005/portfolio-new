@@ -270,7 +270,7 @@ export default function TabSection({ initialTab, posts = [], githubContributions
 
 			{/* home only: short intro under the header, contact info beside it (below it on phones) */}
 			{active === 'about' && (
-				<div className="mb-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
+				<div className="-mt-6 mb-10 md:mt-0 flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
 					<p className="font-display text-[1.15rem] md:text-[1.5rem] font-light leading-snug text-(--c-fg)">
 						<span className="text-(--c-666)">I&apos;m Om, a</span> software engineer<span className="text-(--c-666)">,</span><br />
 						researcher<span className="text-(--c-666)">, and</span>{' '}
