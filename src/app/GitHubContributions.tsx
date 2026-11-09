@@ -139,7 +139,7 @@ export default async function GitHubContributions() {
 
   return (
     <section
-      className="mt-12 w-full md:-ml-[calc(250px+4rem)] md:mt-16 md:w-[calc(100%+250px+4rem)] lg:-ml-[calc(280px+6rem)] lg:w-[calc(100%+280px+6rem)]"
+      className="mt-12 w-full md:mt-16"
       aria-labelledby="github-contributions-title"
     >
       <div className="mb-4 flex items-baseline justify-between gap-4">

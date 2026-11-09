@@ -4,45 +4,73 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Fragment, useState, type ReactNode } from 'react';
 import { Icon, type IconName } from './icons';
-import { isTab, tabs, type Tab } from './tabs';
+import SiteHeader from './SiteHeader';
+import { isTab, type Tab } from './tabs';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
-const experience = [
-	{
-		company: 'ASU Active Perception Group &\nToyota Research Institute (TRINA)',
-		icon: 'trina' as IconName,
-		role: 'Computer Vision Researcher',
-		location: 'Tempe, AZ',
-		date: 'Nov 2025 – Present',
-		description: '3D Gaussian Reconstruction & NVS for Autonomous Vehicles',
+const aboutLink = 'underline underline-offset-4 decoration-(--c-fg)/15 hover:text-(--c-fg) hover:decoration-(--c-fg)/60 transition-colors duration-200';
+const nameLink = `${aboutLink} font-bold`;
+
+// home tab tables: name | description, with the metric / status underneath
+type Row = { name: string; href: string; icon?: IconName; description: string; note?: ReactNode };
+
+const builtProjects: Row[] = [
+	{ name: 'emberdb', href: 'https://github.com/omavashia2005/emberdb', description: 'Concurrent Redis Clusters in Go',
+		note: (
+			<>
+				320K SET ops/s, 3ms p99 latency at 100 concurrent clients.{' '}
+				<Link href="/blog/sharded-maps-go-kv-store" className={aboutLink}>Writeup</Link>,{' '}
+				<a href="https://youtu.be/4B92hMQ9jiU" target="_blank" rel="noopener noreferrer" className={aboutLink}>video</a>
+			</>
+		),
 	},
+	{ name: '.sct', href: 'https://github.com/omavashia2005/.sct', description: 'macOS Keychain-backed vault for your environment variables', note: 'Encrypted sharing with teammates over AirDrop or relay' },
+	{ name: 'ai-tool-elements', href: 'https://ai-tool-elements.vercel.app', description: 'React components for the tools your AI calls', note: '700+ downloads' },
+	{ name: 'agentgit', href: 'https://github.com/omavashia2005/agentgit', description: '3D visualization of your Claude Code sessions', note: '600+ downloads' },
+	{ name: 'hydra', href: 'https://github.com/gholtzap/hydra', description: 'Open source ADE that runs 10+ coding agents in parallel in your terminal', note: 'voice mode, hassle-free worktrees, and continuous sessions between agents' },
 	{
-		company: 'Wells Fargo',
-		icon: 'wellsfargo' as IconName,
-		role: 'Software Engineering Intern',
-		location: 'Phoenix, AZ',
-		date: 'May 2026 – Aug 2026',
-		description: 'Consumer Technology, Loan Pricing',
+		name: 'veto',
+		href: 'https://github.com/omavashia2005/veto',
+		description: '3D git history visualization in Rust',
+		note: <a href="https://x.com/orhundev/status/2114380107964182976" target="_blank" rel="noopener noreferrer" className={aboutLink}>people liked it</a>,
 	},
-	{
-		company: 'IPAuthor',
-		icon: 'ipauthor' as IconName,
-		role: 'Software Engineering Intern',
-		location: 'San Mateo, CA',
-		date: 'May 2025 – Aug 2025',
-		description: 'Backed by Illuminate, eLab, and Okapi.',
-		link: 'https://ipauthor.com',
-	},
+	{ name: 'ShadeASU', href: 'https://shadeasu.pages.dev/', description: 'Helping ASU students walk through maximum shade in the summer', note: "600+ acres of campus mapped using building heights and the sun's position" },
 ];
 
-const aboutLink = 'underline underline-offset-4 decoration-(--c-fg)/15 hover:text-(--c-fg) hover:decoration-(--c-fg)/60 transition-colors duration-200';
+const ossContribs: Row[] = [
+	{ name: 'rust-clippy', icon: 'rust', href: 'https://github.com/rust-lang/rust-clippy/pull/17902', description: 'Added call_missing_target_feature restriction and MIR lints', note: 'The official Rust linter. Queued for merging' },
+	{ name: 'Apache Texera', icon: 'apache', href: 'https://github.com/apache/texera/pull/9020', description: 'Dropped unused generated protobuf TypeScript from the frontend', note: 'Human-AI collaborative data science with visual workflows. Merged' },
+	{ name: 'nvim-gpui', icon: 'neovim', href: 'https://github.com/imkerberos/nvim-gpui/pull/3', description: 'Made the themed titlebar optional', note: 'GPU-rendered Neovim frontend. Merged' },
+	{ name: '3DRealCar', icon: 'repo', href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit/pull/39', description: 'Fixed an infinite loop in the data processing pipeline', note: 'ICCV 2025 in-the-wild RGB-D car dataset. Merged' },
+	{ name: 'Dify', icon: 'dify', href: 'https://github.com/langgenius/dify/pull/22476', description: 'Fixed Python SDK WorkflowClient and KnowledgeBase client imports', note: 'Platform for agentic workflows and RAG pipelines. Merged' },
+];
 
-// Wraps numbers like 700+, 160K, 6ms, 70% in a brighter span.
-const highlightNumbers = (text: string) =>
-	text.split(/((?<![A-Za-z\d])\d[\d,.]*(?:K|k|ms|%|x)?\+?(?![A-Za-z]))/).map((part, i) =>
-		i % 2 ? <span key={i} className="text-(--c-green)">{part}</span> : part
-	);
+// one shared grid per table; fixed name column so projects and OSS descriptions line up with each other
+const Rows = ({ rows }: { rows: Row[] }) => (
+	<ul className="grid sm:grid-cols-[11rem_1fr] sm:gap-x-8">
+		{rows.map(({ name, href, icon, description, note }) => (
+			<li key={name} className="grid gap-y-1 py-2 leading-snug sm:col-span-2 sm:grid-cols-subgrid">
+				<span className="self-start whitespace-nowrap">
+					<a href={href} target="_blank" rel="noopener noreferrer" className={nameLink}>{name}</a>
+					{icon && <Icon name={icon} size={14} className="ml-[0.4em] inline-block align-[-0.12em]" />}
+				</span>
+				<div>
+					<p>{description}</p>
+					{note && <p className="mt-0.5 text-(--c-aaa)">{note}</p>}
+				</div>
+			</li>
+		))}
+	</ul>
+);
+
+const contacts: { label: string; icon: IconName; href: string }[] = [
+	{ label: 'X', icon: 'x', href: 'https://x.com/avashiaom' },
+	{ label: 'GitHub', icon: 'github', href: 'https://github.com/omavashia2005' },
+	{ label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/omavashia/' },
+	{ label: 'YouTube', icon: 'youtube', href: 'https://www.youtube.com/@omavashia' },
+	{ label: 'Email', icon: 'mail', href: 'mailto:omavashia1233@gmail.com' },
+];
 
 const readingList = [
 	{
@@ -211,213 +239,19 @@ const videos = [
 	},
 ];
 
-const projects = [
-	{
-		name: '.sct',
-		icon: 'typescript' as IconName,
-		description: 'Never commit your secrets again with .sct, a MacOS Keychain-backed vault for all your environment variables. Securely share encrypted secrets with teammates via an relay server',
-		detail: 'Ditch .env files forever and build with .sct. Use our lightweight SDK to inject secrets at runtime, drop in replacement for .env files, 100% securely agent accessible via MCP, CLI, and skills. Built for CalHacks 13.0',
-		href: 'https://github.com/omavashia2005/.sct',
-	},
-	{
-		name: 'emberdb',
-		icon: 'go' as IconName,
-		description: 'Blazing fast distributed Redis-compatible key-value store',
-		detail: "Profiled MSET/MGET lock contention and replaced Go's global map with thread-safe sharded maps, doubling SET throughput from 160K to 320K ops/s and halving latency from 6ms to 3ms at 100 concurrent clients",
-		href: 'https://github.com/omavashia2005/emberdb',
-	},
-	{
-		name: 'hydra',
-		icon: 'typescript' as IconName,
-		description: 'Run 10+ coding agents in your terminal parallely',
-		detail: 'Plus features like voice mode, hassle-free worktrees, continuous sessions between different agents, and more',
-		href: 'https://github.com/gholtzap/hydra',
-	},
-	{
-		name: 'yank',
-		icon: 'gnubash' as IconName,
-		description: 'Copy Claude Code (CLI) responses directly to your clipboard',
-		detail: '1200+ downloads on npm',
-		href: 'https://github.com/omavashia2005/yank',
-	},
-	{
-		name: 'ai-tool-elements',
-		icon: 'typescript' as IconName,
-		description: 'UI library for agent connectors',
-		detail: '700+ downloads in its first week, exposing 1200+ tool connectors through a single unified API',
-		href: 'https://ai-tool-elements.vercel.app',
-	},
-	{
-		name: 'agentgit',
-		icon: 'typescript' as IconName,
-		description: '3D visualizer for Claude Code sessions',
-		detail: '500+ downloads on npm',
-		href: 'https://github.com/omavashia2005/agentgit',
-	},
-	{
-		name: "ShadeASU",
-		icon: 'javascript' as IconName,
-		description: '3D campus navigator that plots the shadiest routes between buildings by calculating real-time shadows from sun position',
-		detail: 'Integrated geospatial datasets with solar position algorithms to dynamically shade building geometries; pathfinding optimizes for both thermal comfort and travel time across 600+ acres',
-		href: 'https://shadeasu.pages.dev/',
-	},
-	{
-		name: "dash",
-		icon: 'rust' as IconName,
-		description: 'A geometry dash clone in the terminal in Rust',
-		detail: 'Building a lot from scratch like game physics, rendering, etc',
-		href: 'https://github.com/omavashia2005/dash',
-	},
-	{
-		name: "veto",
-		icon: 'rust' as IconName,
-		description: '[Blazing flast] TUI based 3D git commit graph viewer in Rust',
-		detail: 'Mainly just messing around with smart pointers (Rc<T>, Weak<T>, RefCell<T>, Box<T>) and Fable',
-		href: 'https://github.com/omavashia2005/veto',
-	},
-];
-
-const opensource = [
-	{
-		name: 'rust-lang/rust-clippy',
-		title: 'Clippy',
-		description: 'The official Rust linter',
-		href: 'https://github.com/rust-lang/rust-clippy',
-		prs: [
-			{
-				label: '#17902',
-				detail: "Add call_missing_target_feature restriction and MIR lints",
-				href: 'https://github.com/rust-lang/rust-clippy/pull/17902',
-				status: 'review' as const,
-			},
-		]
-	},
-	{
-		name: 'anomalyco/opentui',
-		title: 'OpenTUI',
-		description: 'Library for building terminal UIs',
-		href: 'https://github.com/anomalyco/opentui',
-		prs: [
-			{
-				label: '#1694',
-				detail: "Fixes #1693 core: report why a CliRenderer was destroyed (Ctrl+C, signal, output failure, or destroy())",
-				href: 'https://github.com/anomalyco/opentui/pull/1694',
-				status: 'open' as const,
-			},
-		]
-	},
-	{
-		name: 'cloudflare/pingora',
-		title: 'Pingora',
-		description: "Cloudflare's Rust framework for fast network services",
-		href: 'https://github.com/cloudflare/pingora',
-		prs: [
-			{
-				label: '#926',
-				detail: 'Finished a TODO in pingora-header-serde to check file paths and avoid panics on unwrap',
-				href: 'https://github.com/cloudflare/pingora/pull/926',
-				status: 'review' as const,
-			},
-			{
-				label: '#928',
-				detail: 'Made the pingora-core rustls listener return a Result instead of panicking',
-				href: 'https://github.com/cloudflare/pingora/pull/928',
-				status: 'review' as const,
-			},
-		],
-	},
-	{
-		name: 'apache/texera',
-		title: 'Apache Texera',
-		description: 'Human-AI collaborative data science with visual workflows',
-		href: 'https://github.com/apache/texera',
-		prs: [
-			{
-				label: '#9020',
-				detail: 'refactor(frontend): drop unused generated protobuf TypeScript',
-				href: 'https://github.com/apache/texera/pull/9020',
-				status: 'merged' as const,
-			},
-		],
-	},
-	{
-		name: 'imkerberos/nvim-gpui',
-		title: 'nvim-gpui',
-		description: 'GPU-rendered Neovim frontend',
-		href: 'https://github.com/imkerberos/nvim-gpui',
-		prs: [
-			{
-				label: '#3',
-				detail: 'feat: make the themed titlebar optional',
-				href: 'https://github.com/imkerberos/nvim-gpui/pull/3',
-				status: 'merged' as const,
-			},
-		],
-	},
-	{
-		name: 'xiaobiaodu/3DRealCar_Toolkit',
-		title: '3DRealCar',
-		description: 'ICCV 2025 in-the-wild RGB-D car dataset',
-		href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit',
-		prs: [
-			{
-				label: '#39',
-				detail: 'Fixed an infinite loop in the data processing pipeline',
-				href: 'https://github.com/xiaobiaodu/3DRealCar_Toolkit/pull/39',
-				status: 'merged' as const,
-			},
-		],
-	},
-	{
-		name: 'langgenius/dify',
-		title: 'Dify',
-		description: 'Platform for agentic workflows and RAG pipelines',
-		href: 'https://github.com/langgenius/dify',
-		prs: [
-			{
-				label: '#22476',
-				detail: 'fix: Python SDK WorkflowClient and KnowledgeBase client imports fixed',
-				href: 'https://github.com/langgenius/dify/pull/22476',
-				status: 'merged' as const,
-			},
-		],
-	},
-];
-
-type PrStatus = 'merged' | 'review' | 'open';
-
-const statusLabel: Record<PrStatus, string> = { merged: 'Merged', review: 'In review', open: 'Open' };
-
-// icon by org, then repo
-const ossIcon: Record<string, IconName> = {
-	'rust-lang': 'rust',
-	cloudflare: 'cloudflare',
-	apache: 'apache',
-	'nvim-gpui': 'neovim',
-	anomalyco: 'anomalyco',
-	langgenius: 'dify',
-};
-
-function RepoIcon({ name }: { name: string }) {
-	const [org, repo] = name.split('/');
-	return <Icon name={ossIcon[org] ?? ossIcon[repo] ?? 'repo'} className="self-center" />;
-}
-
-
-const tabLabel: Record<Tab, string> = { about: 'home', projects: 'projects', oss: 'open source', experience: 'experience', videos: 'videos', reading: 'reading' };
-
-const tabId = (tab: Tab) => tab.replace(' ', '-');
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+// just what the list needs; post bodies stay on the server
+export type PostSummary = { slug: string; title: string; displayDate: string; description: string };
+
 type TabSectionProps = {
 	initialTab?: string;
+	posts?: PostSummary[];
 	githubContributions?: ReactNode;
-	mobileSocials?: ReactNode;
-	identity?: ReactNode;
 };
 
-export default function TabSection({ initialTab, githubContributions, mobileSocials, identity }: TabSectionProps) {
+export default function TabSection({ initialTab, posts = [], githubContributions }: TabSectionProps) {
 	// the tab lives in the URL (?tab=), so the server renders the right one: refresh, back and shared links never flash home
 	// read the live URL too: on browser-back Next reuses its cached render of "/" from before the tab
 	// was picked, so initialTab can be stale while the URL (kept in sync by replaceState) is right
@@ -432,182 +266,67 @@ export default function TabSection({ initialTab, githubContributions, mobileSoci
 	return (
 		<div className="w-full max-w-[420px] md:max-w-[900px] lg:max-w-[980px]">
 
-			{/* ── Tab buttons ──────────────────────────────────────────────── */}
-			<div className="tabs-scroll mb-8 flex items-center gap-x-6 overflow-x-auto pb-1 md:justify-between">
-				<div className="contents" role="tablist" aria-label="Portfolio sections">
-					{tabs.map((tab) => (
-						<Fragment key={tab}>
-							<button
-								id={`tab-${tabId(tab)}`}
-								type="button"
-								role="tab"
-								aria-selected={active === tab}
-								aria-controls={`panel-${tabId(tab)}`}
-								onClick={() => selectTab(tab)}
-								className={[
-									'shrink-0 whitespace-nowrap font-body text-[0.78rem] md:text-[0.84rem] tracking-[0.02em] transition-colors duration-200 leading-none',
-									active === tab
-										? 'text-(--c-fg)'
-										: 'text-(--c-666) hover:text-(--c-fg)/50',
-								].join(' ')}
+			<SiteHeader active={active} onSelect={selectTab} />
+
+			{/* home only: short intro under the header, contact info beside it (below it on phones) */}
+			{active === 'about' && (
+				<div className="mb-10 flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
+					<p className="font-display text-[1.15rem] md:text-[1.5rem] font-light leading-snug text-(--c-fg)">
+						<span className="text-(--c-666)">I&apos;m Om, a</span> software engineer<span className="text-(--c-666)">,</span><br />
+						researcher<span className="text-(--c-666)">, and</span>{' '}
+						<span className="whitespace-nowrap">CS senior at ASU<span className="text-(--c-666)">.</span></span>
+					</p>
+					{/* one row of icons, so it never makes the intro row taller than the intro itself */}
+					<nav aria-label="Contact" className="flex shrink-0 items-center gap-x-5 md:pt-1.5">
+						{contacts.map(({ label, icon, href }) => (
+							<a
+								key={label}
+								href={href}
+								aria-label={label}
+								target={href.startsWith('mailto:') ? undefined : '_blank'}
+								rel="noopener noreferrer"
+								className="text-(--c-666) hover:text-(--c-fg) transition-colors duration-200"
 							>
-								{tabLabel[tab]}
-								<span
-									aria-hidden="true"
-									className={[
-										'block h-px w-full mt-[5px] transition-colors duration-200',
-										active === tab ? 'bg-(--c-fg)/30' : 'bg-transparent',
-									].join(' ')}
-								/>
-							</button>
-							{tab === 'experience' && (
-								<Link
-									href={active === 'about' ? '/blog' : `/blog?from=${active}`}
-									className="shrink-0 font-body text-[0.78rem] md:text-[0.84rem] tracking-[0.02em] transition-colors duration-200 leading-none text-(--c-666) hover:text-(--c-fg)/50"
-								>
-									writing
-									<span aria-hidden="true" className="block h-px w-full mt-[5px] bg-transparent" />
-								</Link>
-							)}
-						</Fragment>
-					))}
+								<Icon name={icon} size={18} color="currentColor" />
+							</a>
+						))}
+					</nav>
 				</div>
-			</div>
+			)}
 
-			{/* tabs stay put on top; identity column only on about, other tabs get the full width */}
-			<div className="anim anim-4 flex flex-col md:flex-row md:gap-16 lg:gap-24 md:items-start">
-				{active === 'about' && identity}
-
-				<div className="flex-1 min-w-0 grid">
+			<div className="anim anim-4">
+				{/* one text size/color for every section; hierarchy is bold → normal → one shade dimmer */}
+				<div className="min-w-0 grid font-body text-[0.85rem] md:text-[0.94rem] text-(--c-fg) tracking-[0.01em]">
 					{/* ── About ────────────────────────────────────────────────────── */}
 					<section
 						id="panel-about"
-						role="tabpanel"
-						aria-labelledby="tab-about"
 						aria-hidden={active !== 'about'}
 						data-active={active === 'about'}
-						className="tab-panel flex flex-col font-body text-[0.85rem] md:text-[0.94rem] text-(--c-aaa) tracking-[0.01em] leading-[1.85]"
+						className="tab-panel flex flex-col leading-[1.85]"
 					>
 						<div className="flex w-full flex-col gap-5">
-							<p>
-								{/* on phones the greeting is the page heading instead */}
-								<span className="hidden md:inline">{"Hey! I'm Om. "}</span>
-								{"I love building stuff mainly in Go, Rust, and TypeScript, and Python."}
-								{/* the tagline is hidden under the photo on phones, so fold it in here */}
-								<span className="md:hidden">
-									{" I'm interested in various parts of the stack and different domains (distributed systems, low level programming, ML/AI, product, and design). Currently CS Senior at ASU"}
-								</span>
-							</p>
-							<p className="hidden md:block">
-								{"Check out the projects and OSS tabs for some stuff that did manage to make it outside the private repos :)."}
-							</p>
-							<p>
-								For the past year, I have been working on a cool research project with <a href="https://faculty.engineering.asu.edu/yezhouyang/" target="_blank" rel="noopener noreferrer" className={aboutLink}>ASU Active Perception <span className="whitespace-nowrap">Group<Icon name="asu" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a> &amp; <a href="https://amrd.toyota.com/division/trina/" target="_blank" rel="noopener noreferrer" className={aboutLink}>Toyota Research Institute of North <span className="whitespace-nowrap">America<Icon name="trina" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a> building in the autonomous vehicle space.
-							</p>
-							<p>
-								In the past, I have interned at <span className="whitespace-nowrap"><a href="https://www.wellsfargo.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>Wells Fargo</a><Icon name="wellsfargo" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> and <span className="whitespace-nowrap"><a href="https://ipauthor.com" target="_blank" rel="noopener noreferrer" className={aboutLink}>IPAuthor</a><Icon name="ipauthor" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span>.
-							</p>
-							<p>
-								{"HMU on X if anything around here looks interesting / wanna build together / anything else!"}
-							</p>
+							<div>
+								<h2 className="mb-2 text-[1.15rem] md:text-[1.3rem] text-(--c-fg)">Projects</h2>
+								<Rows rows={builtProjects} />
+								<a href="https://github.com/omavashia2005" target="_blank" rel="noopener noreferrer" className={`${aboutLink} mt-2 inline-block text-(--c-aaa)`}>all my projects</a>
+							</div>
+							<div>
+								<h2 className="mb-2 text-[1.15rem] md:text-[1.3rem] text-(--c-fg)">Open source</h2>
+								<Rows rows={ossContribs} />
+							</div>
+							<div>
+								<p><span className="text-(--c-fg)">Research:</span> Reconstruction &amp; NVS to train self driving cars w/ <a href="https://faculty.engineering.asu.edu/yezhouyang/" target="_blank" rel="noopener noreferrer" className={nameLink}>ASU Active Perception <span className="whitespace-nowrap">Group<Icon name="asu" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a> &amp; <a href="https://amrd.toyota.com/division/trina/" target="_blank" rel="noopener noreferrer" className={nameLink}>Toyota Research Institute of North <span className="whitespace-nowrap">America<Icon name="trina" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a></p>
+							</div>
+							<div>
+								<p><span className="text-(--c-fg)">Places I&apos;ve worked:</span> In the past, I have interned at <span className="whitespace-nowrap"><a href="https://www.wellsfargo.com" target="_blank" rel="noopener noreferrer" className={nameLink}>Wells Fargo</a><Icon name="wellsfargo" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> and <span className="whitespace-nowrap"><a href="https://ipauthor.com" target="_blank" rel="noopener noreferrer" className={nameLink}>IPAuthor</a><Icon name="ipauthor" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span>. <a href="https://www.linkedin.com/in/omavashia/" target="_blank" rel="noopener noreferrer" className={aboutLink}>See what I did there</a>.</p>
+							</div>
 						</div>
-						<div className="mt-7 md:hidden">{mobileSocials}</div>
 						{active === 'about' && githubContributions}
-					</section>
-
-					{/* ── Experience ───────────────────────────────────────────────── */}
-					<section
-						id="panel-experience"
-						role="tabpanel"
-						aria-labelledby="tab-experience"
-						aria-hidden={active !== 'experience'}
-						data-active={active === 'experience'}
-						className="tab-panel"
-					>
-						<ul className="flex flex-col gap-7">
-							{experience.map(({ company, icon, role, location, date, description, ...rest }) => {
-								const link = 'link' in rest ? (rest as { link: string }).link : undefined;
-								return (
-									<li key={company} className="group grid grid-flow-row-dense grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-[3px]">
-										{/* phone: name full width, then role|date, description|location. desktop: name|date, role|location, description */}
-										<span className="col-span-2 mb-1 flex items-start gap-2 font-display text-[1.15rem] md:col-span-1 md:mb-0 md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
-											<Icon name={icon} size={16} className="mt-[3px]" />
-											<span className="whitespace-pre-line md:whitespace-normal">{company}</span>
-										</span>
-										<span className="col-start-2 text-right font-body text-[0.62rem] text-(--c-666) tracking-[0.02em]">
-											{date}
-										</span>
-										<span className="col-start-1 font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
-											{role}
-										</span>
-										<span className="col-start-2 text-right font-body text-[0.62rem] text-(--c-666) tracking-[0.02em]">
-											{location}
-										</span>
-										<span className="col-start-1 md:col-span-2 font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
-											{highlightNumbers(description)}
-											{link && (
-												<>
-													{' '}
-													<a
-														href={link}
-														target="_blank"
-														rel="noopener noreferrer"
-														className="hover:text-(--c-fg)/50 transition-colors duration-200 underline underline-offset-2 decoration-(--c-fg)/15"
-													>
-														ipauthor.com
-													</a>
-												</>
-											)}
-										</span>
-									</li>
-								);
-							})}
-						</ul>
-					</section>
-
-					{/* ── Projects ─────────────────────────────────────────────────── */}
-					<section
-						id="panel-projects"
-						role="tabpanel"
-						aria-labelledby="tab-projects"
-						aria-hidden={active !== 'projects'}
-						data-active={active === 'projects'}
-						className="tab-panel"
-					>
-						<ul className="flex flex-col gap-7">
-							{projects.map(({ name, icon, description, detail, href }) => (
-								<li key={name} className="group">
-									<a
-										href={href}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="flex flex-col gap-[3px]"
-									>
-										<div className="flex items-center gap-2">
-											<Icon name={icon} />
-											<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
-												{name}
-											</span>
-										</div>
-										<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
-											{highlightNumbers(description)}
-										</span>
-										<div className="flex items-baseline justify-between gap-4 mt-[1px]">
-											<span className="font-body text-[0.67rem] text-(--c-666) tracking-[0.02em]">
-												{highlightNumbers(detail)}
-											</span>
-										</div>
-									</a>
-								</li>
-							))}
-						</ul>
 					</section>
 
 					{/* ── Reading List ─────────────────────────────────────────────── */}
 					<section
 						id="panel-reading"
-						role="tabpanel"
-						aria-labelledby="tab-reading"
 						aria-hidden={active !== 'reading'}
 						data-active={active === 'reading'}
 						className="tab-panel"
@@ -617,56 +336,30 @@ export default function TabSection({ initialTab, githubContributions, mobileSoci
 								.filter((category) => readingList.some((r) => r.category === category))
 								.map((category) => (
 									<div key={category}>
-										<h3 className="mb-6 flex items-center gap-[10px] font-body text-[0.68rem] md:text-[0.72rem] uppercase tracking-[0.22em] text-(--c-aaa)">
+										{/* same as the home headings ("Stuff I've built:") */}
+										<h3 className="mb-4 flex items-center gap-2">
 											<Icon name={categoryIcon[category].name} color={categoryIcon[category].color} size={14} />
-											{category}
+											{category[0].toUpperCase() + category.slice(1)}:
 										</h3>
-										<ul className="flex flex-col gap-7">
+										<ul className="flex flex-col gap-6">
 											{readingList.filter((r) => r.category === category).map(({ title, author, note, href, series, ...rest }) => (
 												<li key={title} className="flex items-start gap-3">
-													<Icon name={('icon' in rest && rest.icon) || 'book'} className="mt-[6px]" />
-													<div className="flex min-w-0 flex-col gap-[3px]">
-													{series ? (
-														<div className="flex flex-col gap-[3px]">
-															<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg)">
-																{series.map((s, i) => (
+													<Icon name={('icon' in rest && rest.icon) || 'book'} size={14} className="mt-[0.2em] shrink-0" />
+													<div className="min-w-0">
+														<p className="font-bold">
+															{series
+																? series.map((s, i) => (
 																	<Fragment key={s.href}>
 																		{i > 0 && ' + '}
-																		<a
-																			href={s.href}
-																			target="_blank"
-																			rel="noopener noreferrer"
-																			className="underline underline-offset-4 decoration-(--c-fg)/10 hover:text-(--c-strong) hover:decoration-(--c-fg)/60 transition-colors duration-200"
-																		>
-																			{s.label}
-																		</a>
+																		<a href={s.href} target="_blank" rel="noopener noreferrer" className={aboutLink}>{s.label}</a>
 																	</Fragment>
-																))}
-															</span>
-															<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
-																{author}
-															</span>
-														</div>
-													) : (
-														<a
-															href={href}
-															target="_blank"
-															rel="noopener noreferrer"
-															className="group flex flex-col gap-[3px]"
-														>
-															<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
-																{title}
-															</span>
-															<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em] mt-[1px]">
-																{author}
-															</span>
-														</a>
-													)}
-														<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) tracking-[0.01em]">
-															{note}
-														</span>
-														</div>
-													</li>
+																))
+																: <a href={href} target="_blank" rel="noopener noreferrer" className={aboutLink}>{title}</a>}
+														</p>
+														<p className="mt-1">{author}</p>
+														<p className="mt-0.5 text-(--c-aaa)">{note}</p>
+													</div>
+												</li>
 											))}
 										</ul>
 									</div>
@@ -674,70 +367,34 @@ export default function TabSection({ initialTab, githubContributions, mobileSoci
 						</div>
 					</section>
 
-					{/* ── Open Source ──────────────────────────────────────────────── */}
+					{/* ── Writing ──────────────────────────────────────────────────── */}
 					<section
-						id="panel-oss"
-						role="tabpanel"
-						aria-labelledby="tab-oss"
-						aria-hidden={active !== 'oss'}
-						data-active={active === 'oss'}
-						className="tab-panel"
+						id="panel-writing"
+						aria-hidden={active !== 'writing'}
+						data-active={active === 'writing'}
+						className="tab-panel leading-snug"
 					>
-						<div className="flex flex-col gap-10">
-							{(['merged', 'review', 'open'] as const).map((status) => {
-								const repos = opensource
-									.map((repo) => ({ ...repo, prs: repo.prs.filter((pr) => pr.status === status) }))
-									.filter((repo) => repo.prs.length > 0);
-								if (repos.length === 0) return null;
-								return (
-									<div key={status}>
-										<h3 className="mb-6 flex items-center gap-[10px] font-body text-[0.68rem] md:text-[0.72rem] uppercase tracking-[0.22em] text-(--c-aaa)">
-											<Icon name={status} size={14} />
-											{statusLabel[status]}
-											<span className="text-(--c-666)">{repos.reduce((n, r) => n + r.prs.length, 0)}</span>
-										</h3>
-										<ul className="flex flex-col gap-7">
-											{repos.map(({ name, title, description, href, prs }) => (
-													<li key={name}>
-														<a href={href} target="_blank" rel="noopener noreferrer" className="group flex flex-col gap-[3px]">
-															<span className="flex flex-wrap items-center gap-2">
-																<RepoIcon name={name} />
-																<span className="font-display text-[1.15rem] md:text-[1.3rem] font-light leading-tight text-(--c-fg) group-hover:text-(--c-strong) transition-colors duration-200">
-																	{title}
-																</span>
-															</span>
-															<span className="font-body text-[0.67rem] md:text-[0.72rem] text-(--c-666) tracking-[0.02em]">
-																{description}
-															</span>
-														</a>
-														<ul className="mt-3 flex flex-col gap-3">
-															{prs.map((pr) => (
-																<li key={pr.href}>
-																	<a href={pr.href} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-2">
-																		<span className="shrink-0 font-body text-[0.71rem] md:text-[0.78rem] tracking-[0.01em] text-(--c-fg) group-hover:text-(--c-strong) underline underline-offset-4 decoration-(--c-fg)/10 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
-																			{pr.label}
-																		</span>
-																		<span className="font-body text-[0.71rem] md:text-[0.78rem] text-(--c-888) group-hover:text-(--c-bbb) tracking-[0.01em] transition-colors duration-200">
-																			{pr.detail}
-																		</span>
-																	</a>
-																</li>
-															))}
-														</ul>
-													</li>
-											))}
-										</ul>
-									</div>
-								);
-							})}
-						</div>
+						{/* title | date on one line, description under it; same size throughout, hierarchy by weight and shade */}
+						<ul className="flex flex-col gap-6">
+							{posts.map((post) => (
+								<li key={post.slug}>
+									<Link href={`/blog/${post.slug}`} className="group block">
+										<div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+											<span className="font-bold underline underline-offset-4 decoration-(--c-fg)/15 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
+												{post.title}
+											</span>
+											<span className="shrink-0 text-(--c-aaa)">{post.displayDate}</span>
+										</div>
+										<p className="mt-1.5 text-(--c-aaa)">{post.description}</p>
+									</Link>
+								</li>
+							))}
+						</ul>
 					</section>
 
 					{/* ── Videos ─────────────────────────────── */}
 					<section
 						id="panel-videos"
-						role="tabpanel"
-						aria-labelledby="tab-videos"
 						aria-hidden={active !== 'videos'}
 						data-active={active === 'videos'}
 						className="tab-panel"
@@ -763,13 +420,11 @@ export default function TabSection({ initialTab, githubContributions, mobileSoci
 											</span>
 										</span>
 									</div>
-									<div className="mt-3 flex items-baseline justify-between gap-4">
-										<span className="font-display text-[1.15rem] font-light leading-tight text-(--c-fg) transition-colors duration-200 group-hover:text-(--c-strong) md:text-[1.3rem]">
-											{v.title}
-										</span>
-									</div>
-									<span className="mt-1 flex items-center gap-[6px] font-body text-[0.58rem] tracking-[0.02em] text-(--c-666)">
-										<Icon name="youtube" size={12} />
+									<p className="mt-3 font-bold leading-snug underline underline-offset-4 decoration-(--c-fg)/15 group-hover:decoration-(--c-fg)/60 transition-colors duration-200">
+										{v.title}
+									</p>
+									<span className="mt-1 flex items-center gap-1.5 text-(--c-aaa)">
+										<Icon name="youtube" size={14} />
 										YouTube
 									</span>
 								</a>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import SiteHeader from '../../SiteHeader';
 import { notFound } from 'next/navigation';
 import { getBlogPost, getBlogPosts } from '../posts';
 import Contents from './Contents';
@@ -43,22 +43,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="min-h-screen px-6 py-14 md:px-12 md:py-20">
+    <main className="min-h-screen px-6 pt-8 pb-14 md:px-12 md:pt-14 md:pb-20">
       <article className="mx-auto w-full max-w-[720px]">
-        <nav className="anim anim-1 flex items-center gap-2 font-body text-[0.75rem] tracking-[0.02em] text-(--c-666)">
-          <Link href="/" className="transition-colors duration-200 hover:text-(--c-fg)">
-            home
-          </Link>
-          <span aria-hidden="true" className="text-(--c-444)">/</span>
-          <Link href="/blog" className="transition-colors duration-200 hover:text-(--c-fg)">
-            writing
-          </Link>
-        </nav>
+        <SiteHeader active="writing" />
 
         {/* relative wrapper so the contents sidebar starts level with the date */}
-        <div className="relative mt-12">
+        <div className="relative">
         <Contents />
-        <header className="anim anim-2 border-b border-(--c-fg)/[0.07] pb-8">
+        <header className="border-b border-(--c-fg)/[0.07] pb-8">
           <div className="font-body text-[0.55rem] uppercase tracking-[0.14em] text-(--c-666)">
             <time dateTime={post.date}>{post.displayDate}</time>
           </div>
@@ -70,7 +62,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </p>
         </header>
 
-        <div className="blog-body anim anim-3 mt-10">{post.content}</div>
+        <div className="blog-body mt-10">{post.content}</div>
         </div>
       </article>
     </main>

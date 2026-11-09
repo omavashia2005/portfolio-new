@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Fragment_Mono, JetBrains_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
-import ThemeToggle from './ThemeToggle';
 
 // Swansea by Roger White, free for personal use (see fonts/swansea/SWANSE__.TXT); served as the original TTF since the license forbids format conversion; only regular is used (the bold italic file also fails Chrome's font sanitizer)
 const display = localFont({
@@ -64,7 +63,6 @@ export default function RootLayout({
         />
       </head>
       <body className="text-(--c-fg)">
-        <ThemeToggle />
         {children}
       </body>
     </html>

@@ -6,20 +6,62 @@ const moon = 'M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.96
 
 // No React state: which icon shows is decided in CSS from the active theme (see .theme-icon in
 // globals.css), so it renders correctly on the first paint and even before JS hydrates.
-export default function ThemeToggle() {
-	const toggle = () => {
+const apply = (next: string) => {
+	// freeze transitions for the swap so text (transition-colors) and svg fills flip together
+	const freeze = document.createElement('style');
+	freeze.textContent = '*,*::before,*::after{transition:none!important}';
+	document.head.appendChild(freeze);
+	document.documentElement.dataset.theme = next;
+	getComputedStyle(document.body).color; // force the restyle while frozen
+	requestAnimationFrame(() => freeze.remove());
+	try {
+		localStorage.setItem('theme', next);
+	} catch {}
+};
+
+// Pixel reveal: a view transition snapshots the old page, and the new-theme snapshot is clipped to a
+// growing set of blocks that spread outward from the button (distance + jitter decides each block's turn).
+const DURATION = 700; // ms
+const BLOCK = 48; // px
+// placed in each page's header row (home tabs row, blog breadcrumb) so it never gets a line of its own
+export default function ThemeToggle({ className = '' }: { className?: string }) {
+	const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (document.getElementById('pixel-clip')) return; // mid-transition
 		const current = getComputedStyle(document.documentElement).colorScheme === 'light' ? 'light' : 'dark';
 		const next = current === 'light' ? 'dark' : 'light';
-		// freeze transitions for the swap so text (transition-colors) and svg fills flip together
-		const freeze = document.createElement('style');
-		freeze.textContent = '*,*::before,*::after{transition:none!important}';
-		document.head.appendChild(freeze);
-		document.documentElement.dataset.theme = next;
-		getComputedStyle(document.body).color; // force the restyle while frozen
-		requestAnimationFrame(() => freeze.remove());
-		try {
-			localStorage.setItem('theme', next);
-		} catch {}
+		if (!('startViewTransition' in document) || matchMedia('(prefers-reduced-motion: reduce)').matches) return apply(next);
+
+		const r = e.currentTarget.getBoundingClientRect();
+		const ox = r.left + r.width / 2;
+		const oy = r.top + r.height / 2;
+		const maxD = Math.hypot(Math.max(ox, innerWidth - ox), Math.max(oy, innerHeight - oy));
+		const blocks: [x: number, y: number, at: number][] = [];
+		for (let y = 0; y < innerHeight; y += BLOCK)
+			for (let x = 0; x < innerWidth; x += BLOCK) {
+				const d = Math.hypot(x + BLOCK / 2 - ox, y + BLOCK / 2 - oy) / maxD;
+				blocks.push([x, y, (d * 0.75 + Math.random() * 0.25) * DURATION]);
+			}
+
+		const style = document.head.appendChild(document.createElement('style'));
+		style.id = 'pixel-clip';
+		const clip = (t: number) => {
+			const squares = blocks.filter((b) => b[2] <= t).map(([x, y]) => `M${x} ${y}h${BLOCK}v${BLOCK}h-${BLOCK}z`);
+			style.textContent = `::view-transition-new(root){clip-path:path('M0 0${squares.join('')}')}`;
+		};
+		clip(-1);
+
+		const vt = document.startViewTransition(() => apply(next));
+		vt.ready.then(() => {
+			// no-op animation keeps the transition alive while rAF drives the clip
+			document.documentElement.animate({ opacity: [1, 1] }, { duration: DURATION + 50, pseudoElement: '::view-transition-new(root)' });
+			const start = performance.now();
+			const tick = (now: number) => {
+				clip(now - start);
+				if (now - start < DURATION) requestAnimationFrame(tick);
+			};
+			requestAnimationFrame(tick);
+		});
+		vt.finished.finally(() => style.remove());
 	};
 
 	return (
@@ -27,7 +69,7 @@ export default function ThemeToggle() {
 			type="button"
 			onClick={toggle}
 			aria-label="Toggle dark mode"
-			className="absolute right-4 top-4 z-50 p-2 text-(--c-666) transition-colors duration-200 hover:text-(--c-fg) md:right-6 md:top-6"
+			className={`p-2 text-(--c-666) transition-colors duration-200 hover:text-(--c-fg) ${className}`}
 		>
 			<svg aria-hidden="true" viewBox="0 0 16 16" width="15" height="15" fill="currentColor" className="theme-icon-sun">
 				<path d={sun} />
