@@ -25,7 +25,7 @@ const builtProjects: Row[] = [
 			</>
 		),
 	},
-	{ name: '.sct', href: 'https://github.com/omavashia2005/.sct', description: 'macOS Keychain-backed vault for your environment variables', note: 'Encrypted sharing with teammates over AirDrop or relay' },
+	{ name: '.sct', href: 'https://dotsct.pages.dev', description: 'macOS Keychain-backed vault for your environment variables', note: 'Encrypted sharing with teammates over AirDrop or relay' },
 	{ name: 'ai-tool-elements', href: 'https://ai-tool-elements.vercel.app', description: 'React components for the tools your AI calls', note: '700+ downloads' },
 	{ name: 'agentgit', href: 'https://github.com/omavashia2005/agentgit', description: '3D visualization of your Claude Code sessions', note: '600+ downloads' },
 	{ name: 'hydra', href: 'https://github.com/gholtzap/hydra', description: 'Open source ADE that runs 10+ coding agents in parallel in your terminal', note: 'voice mode, hassle-free worktrees, and continuous sessions between agents' },
