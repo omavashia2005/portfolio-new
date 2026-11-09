@@ -20,6 +20,8 @@ export default function Contents() {
 
 	useEffect(() => {
 		const els = [...document.querySelectorAll<HTMLHeadingElement>('.blog-body h2, .blog-body h3')];
+		// posts without headings (e.g. hello-world) get no sidebar; update() below assumes at least one
+		if (els.length === 0) return;
 		for (const el of els) el.id ||= slugify(el.textContent ?? '');
 		setHeadings(els.map((el) => ({ id: el.id, text: el.textContent ?? '', level: el.tagName === 'H2' ? 2 : 3 })));
 
