@@ -30,7 +30,7 @@ export default function SiteHeader({ active, onSelect }: { active: Tab; onSelect
 							prefetch={!onSelect}
 							onClick={go(tab)}
 							aria-current={active === tab ? 'page' : undefined}
-							className={`transition-colors duration-200 hover:text-(--c-fg) ${active === tab ? 'text-(--c-fg)' : ''}`}
+							className={`transition-colors duration-200 hover:text-(--c-fg) ${active === tab ? 'font-bold text-(--c-fg)' : ''}`}
 						>
 							{tab}
 						</Link>
