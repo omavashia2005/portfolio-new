@@ -64,6 +64,16 @@ const Rows = ({ rows }: { rows: Row[] }) => (
 	</ul>
 );
 
+// inline link + logo; the last word and the logo never wrap apart
+const Org = ({ href, icon, bold, children }: { href: string; icon: IconName; bold?: boolean; children: string }) => {
+	const i = children.lastIndexOf(' ') + 1;
+	return (
+		<a href={href} target="_blank" rel="noopener noreferrer" className={bold ? nameLink : aboutLink}>
+			{children.slice(0, i)}<span className="whitespace-nowrap">{children.slice(i)}<Icon name={icon} size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span>
+		</a>
+	);
+};
+
 const contacts: { label: string; icon: IconName; href: string }[] = [
 	{ label: 'X', icon: 'x', href: 'https://x.com/avashiaom' },
 	{ label: 'GitHub', icon: 'github', href: 'https://github.com/omavashia2005' },
@@ -315,10 +325,17 @@ export default function TabSection({ initialTab, posts = [], githubContributions
 								<Rows rows={ossContribs} />
 							</div>
 							<div>
-								<p><span className="text-(--c-fg)">Research:</span> Reconstruction &amp; NVS to train self driving cars w/ <a href="https://faculty.engineering.asu.edu/yezhouyang/" target="_blank" rel="noopener noreferrer" className={nameLink}>ASU Active Perception <span className="whitespace-nowrap">Group<Icon name="asu" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a> &amp; <a href="https://amrd.toyota.com/division/trina/" target="_blank" rel="noopener noreferrer" className={nameLink}>Toyota Research Institute of North <span className="whitespace-nowrap">America<Icon name="trina" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span></a></p>
+								<h2 className="mb-2 text-[1.15rem] md:text-[1.3rem] text-(--c-fg)">Research</h2>
+								<p>Reconstruction &amp; NVS to train self driving cars w/ <Org href="https://faculty.engineering.asu.edu/yezhouyang/" icon="asu" bold>ASU Active Perception Group</Org> &amp; <Org href="https://amrd.toyota.com/division/trina/" icon="trina" bold>Toyota Research Institute of North America</Org></p>
 							</div>
 							<div>
-								<p><span className="text-(--c-fg)">Places I&apos;ve worked:</span> In the past, I have interned at <span className="whitespace-nowrap"><a href="https://www.wellsfargo.com" target="_blank" rel="noopener noreferrer" className={nameLink}>Wells Fargo</a><Icon name="wellsfargo" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span> and <span className="whitespace-nowrap"><a href="https://ipauthor.com" target="_blank" rel="noopener noreferrer" className={nameLink}>IPAuthor</a><Icon name="ipauthor" size={14} className="ml-[0.4em] inline-block align-[-0.12em]" /></span>. <a href="https://www.linkedin.com/in/omavashia/" target="_blank" rel="noopener noreferrer" className={aboutLink}>See what I did there</a>.</p>
+								<h2 className="mb-2 text-[1.15rem] md:text-[1.3rem] text-(--c-fg)">Work</h2>
+								<p>SWE Intern at <Org href="https://www.wellsfargo.com" icon="wellsfargo" bold>Wells Fargo</Org>, where I built the loan price verification engine for the Auto lending team.</p>
+								<p className="mt-3">
+									SWE Intern at <Org href="https://ipauthor.com" icon="ipauthor" bold>IPAuthor</Org> (backed by <Org href="https://illuminate.com" icon="illuminate">Illuminate</Org>, <Org href="https://okapivc.com" icon="okapi">Okapi</Org> &amp; <Org href="https://elabvc.com" icon="elab">eLab Ventures</Org>),
+									where I migrated a core part of the product to <Org href="https://dify.ai" icon="dify">Dify</Org> and <Org href="https://tiptap.dev" icon="tiptap">TipTap</Org>.
+									It&apos;s now used by companies like <Org href="https://www.resmed.com" icon="resmed">ResMed</Org>, <Org href="https://www.qualcomm.com" icon="qualcomm">Qualcomm</Org>, <Org href="https://www.elmos.com" icon="elmos">Elmos Semiconductor</Org> &amp; <Org href="https://www.chevron.com" icon="chevron">Chevron</Org>.
+								</p>
 							</div>
 						</div>
 						{active === 'about' && githubContributions}
